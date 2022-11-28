@@ -1,0 +1,269 @@
+<div class="content-wrapper">
+  <div class="page-header">
+    <h3 class="page-title">
+      <span class="page-title-icon bg-gradient-primary text-white mr-2">
+        <i class="mdi mdi-cash-usd"></i>
+      </span>
+      Transactions
+    </h3>
+  </div>
+  <div class="d-flex justify-content-center align-items-center mb-2">
+    <div class="spinner-border text-info spinner-border-sm" role="status" id="transaction_loader" style="display: none;">
+      <span class="sr-only">...loading</span>
+    </div>
+  </div>
+  <div class="row" ng-init="get_all_transactions()">
+
+    <div class="col-12 grid-margin">
+
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">All Transactions</h4>
+          <div class="search-field d-none d-md-block my-3">
+            <form class="d-flex align-items-center h-100" action="#">
+              <div class="input-group">
+                <div class="input-group-prepend bg-transparent">
+                  <i class="input-group-text border-0 mdi mdi-file-find"></i>
+                </div>
+                <input type="text" class="form-control bg-transparent border-0" placeholder="search for a transaction "
+                  ng-model="transactionSearch">
+              </div>
+            </form>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Payee</th>
+                  <th>Email / Client ID</th>
+                  <th>Currency</th>
+                  <th>Amount</th>
+                  <th>Transaction Ref</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr dir-paginate="transaction in all_transactions | filter:transactionSearch | itemsPerPage: pageSize"
+                  current-page="currentPage" ng-cloak>
+                  <td>{{($index +1) + (currentPage-1) * pageSize}}</td>
+                  <td>
+                    <span>
+                      {{transaction.seller_fullname | limitTo : 30}}{{ transaction.seller_fullname.length > 30 ? "..." :
+                      '' }}
+                    </span>
+                    <span ng-switch="user.status">
+                      <span ng-switch-when="1">
+                        <i class="mdi mdi-check-circle text-success"></i>
+                      </span>
+                      <span ng-switch-when="0">
+                        <i class="mdi mdi mdi-lock text-danger"></i>
+                      </span>
+                      <span ng-switch-default>
+                      </span>
+                    </span>
+                  </td>
+                  <td>
+                    {{transaction.user_email | limitTo: 30}}<br /><span class="text-muted"
+                      style="font-size: 12px">{{transaction.seller_id}}</span>
+                  </td>
+                  <td>
+                    <span>
+                      {{ transaction.currency }}
+                    </span>
+                  </td>
+                  <td>
+                    <span>
+                      {{ transaction.amount | currency : "" }}
+                    </span>
+                  </td>
+                  <td>
+                    <span>
+                      {{ transaction.trans_reference}}
+                    </span>
+                  </td>
+                  <td>
+                    <span>
+                      {{ transaction.trans_date}}
+                    </span>
+                  </td>
+                  <!-- <td>
+                    <span>
+                      {{ transaction.trans_status}}
+                    </span>
+                  </td> -->
+                  <td ng-switch="transaction.trans_status">
+                    <span ng-switch-when="success">
+                      <span class="badge badge-success">
+                        {{ transaction.trans_status}}
+                      </span>
+                    </span>
+                    <span ng-switch-default>
+                      <span class="badge badge-warning">
+                        {{ transaction.trans_status}}
+                      </span>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <dir-pagination-controls boundary-links="true" template-url="" style="float: right">
+            </dir-pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- dropdown -->
+
+    <!-- modal window -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+      aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">
+
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+            <div class="card">
+              <img class="card-img-top rounded h-50"
+                src="{{dirlocation}}/public/assets/images/uploads/profile/{{userInfo.image}}" alt="Card image">
+              <div class="card-body">
+                <h4 class="card-title">{{ userInfo.fullname }} <span ng-switch="userInfo.account_type_title"
+                    class="ml-4">
+                    <span ng-switch-when="Free">
+                      <span class="badge badge-secondary">
+                        {{userInfo.account_type_title}}
+                      </span>
+                    </span>
+                    <span ng-switch-when="Basic">
+                      <span class="badge badge-success">
+                        {{userInfo.account_type_title}}
+                      </span>
+                    </span>
+                    <span ng-switch-when="Super">
+                      <span class="badge badge-info">
+                        {{userInfo.account_type_title}}
+                      </span>
+                    </span>
+                    <span ng-switch-when="Advance">
+                      <span class="badge badge-primary">
+                        {{userInfo.account_type_title}}
+                      </span>
+                    </span>
+                    <span ng-switch-default>
+                      <span class="badge badge-light">
+
+                      </span>
+                    </span>
+                  </span></h4>
+                <p ng-show="userInfo.email">
+                  <i class="mdi mdi-check-circle mr-1 text-success">
+                  </i>
+                  Email:
+                  <span>
+                    {{ userInfo.email }}</span>
+                </p>
+                <p ng-show="userInfo.phone">
+                  <i class="mdi mdi-check-circle mr-1 text-success">
+                  </i>
+                  Phone:
+                  <span>
+                    {{ userInfo.phone }}</span>
+                </p>
+                <p ng-show="userInfo.state">
+                  <i class="mdi mdi-check-circle mr-1 text-success">
+                  </i>
+                  State:
+                  <span>
+                    {{ userInfo.state }}</span>
+                </p>
+                <p ng-show="userInfo.whatsapp">
+                  <i class="mdi mdi-check-circle text-success"></i>
+                  Whatsapp:
+                  <span>
+                    {{ userInfo.whatsapp }}</span>
+                </p>
+                <p ng-show="userInfo.last_login">
+                  <i class="mdi mdi-check-circle mr-1 text-success">
+                  </i>
+                  Last seen:
+                  <span>
+                    {{ userInfo.last_login }}</span>
+                </p>
+                <p ng-show="userInfo.signup_date">
+                  <i class="mdi mdi-check-circle mr-1 text-success">
+                  </i>
+                  Join date:
+                  <span>
+                    {{ userInfo.signup_date}}</span>
+                </p>
+
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- modal window -->
+    <!-- small modal -->
+    <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">
+              {{ listingValue.name }}
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing
+              elit. Autem dolore blanditiis temporibus. Saepe, dolor
+              inventore sint sequi dolores rem aspernatur accusamus
+              architecto nisi praesentium expedita molestias
+              accusamus.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end small modal -->
+    <!-- small modal disable user -->
+    <div class="modal fade disable_enable_user" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">
+              {{ listingValue.name }}
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>
+              helloe
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end small modal -->
+  </div>
+</div>

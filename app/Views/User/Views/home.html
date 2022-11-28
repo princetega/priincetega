@@ -1,0 +1,104 @@
+<div class="main-content container-fluid">
+  <section class="section">
+    <div class="col-12 mt-3 mb-1">
+      <h4 class="section-title text-uppercase">WELCOME BACK!</h4>
+      <p class="text-subtitle text-muted">A good dashboard to display your statistics</p>
+  </div>
+  <view  ng-controller="productController"  ng-init="fetch_all_product_of_seller()">
+  <div class="card widget-todo">
+    <div class="card-header">
+      <div style="text-align: center;" class="loader">
+        <img src="{{dirlocation}}public/assets/images/spinner4.gif" style="width:80px">
+        </div>
+        
+      <div ng-show="slot_remaining_duration > 0">
+        <div class="row">
+          <div class="col-lg-4">
+          <span class="badge bg-secondary">{{user_data.seller_account_details.title | uppercase}}</span> ACCOUNT PACKAGE</div> 
+          <div class="col-lg-6"> YOU HAVE <span class="text-primary" style="font-style: 18px;font-weight:bold;">{{user_remaining_product_slot}} </span> ADS SLOT LEFT AND {{slot_remaining_duration}} DAYS LEFT
+          </div>
+          <div class="col-lg-2">
+            <a href="{{dirlocation}}dashboard/account_packages" class="btn btn-outline-primary btn-sm" style="float:right">Upgrade</a>
+          </div>
+        
+      </div>
+      
+      
+    </div>
+
+    <div ng-show="slot_remaining_duration < 1 && user_data.account_type=='1'">
+    <div class="row">
+      <div class="col-lg-4">
+      <span class="badge bg-secondary">{{user_data.seller_account_details.title | uppercase}}</span> ACCOUNT PACKAGE</div> 
+      <div class="col-lg-6"> YOU HAVE <span class="text-primary" style="font-style: 18px;font-weight:bold;">{{user_remaining_product_slot}} </span> ADS SLOT LEFT
+      </div>
+      <div class="col-lg-2">
+        <a href="{{dirlocation}}dashboard/account_packages" class="btn btn-outline-primary btn-sm" style="float:right">Upgrade</a>
+      </div>
+    
+  </div>
+
+  </div>
+    </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body text-black">
+        <p class="card-title text-black" style="font-size: 50px ">{{products_count}}</p>
+        <p class="mb-4 ">Total uplaoded posting</p>
+        
+      </div>
+    </div>
+  </div>
+</view>
+  <div class="col-md-6 grid-margin stretch-card" ng-controller="messageController" ng-init="fetch_all_messages_to_seller()">
+    <div class="card">
+      <div class="card-body bg-gradient-warning">
+        <p class="card-title" style="font-size: 50px">{{messages.length}}</p>
+        <p class="mb-4">Total clients respond</p>
+       
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="row"  ng-controller="messageController">
+  <div class="col-md-12 stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <p class="card-title" style="font-size: 20px;">Client Messages</p>
+        <div class="table-responsive" ng-init="fetch_all_messages_to_seller()">
+          <table id="recent-purchases-listing" class="table table-sm table-striped table-hover">
+            <thead>
+              <tr>
+              <th>SN</th>
+              <th>Sender Name</th>
+              <th>Sender Details</th>
+              <th>Product Details</th>
+              <th>Message</th>
+              </tr>
+            </thead>
+            <tbody>
+             <tr ng-repeat="message in messages | limitTo:5">
+            <td>{{$index + 1}}</td>
+            <td style="font-weight: bold;">{{message.sender_name}}</td>
+            <td>{{message.sender_email}}<br/><span style="font-size: 12px;">{{message.sender_phone}}</span></td>
+            
+            <td ng-init="img = message.image.split(',')">
+            <img style="width: 40px!important;float:left;margin-right:6px" src="{{dirlocation}}public/assets/images/uploads/products/{{img[0]}}">
+              {{message.name}}-{{message.price}}</td>
+            <td>{{message.message}}</td>
+            </tr>
+            </tbody>
+          </table>
+          <a href="{{dirlocation}}dashboard/messages" ng-show="messages.length>0" class="btn btn-primary btn-sm" style="float:right">See More</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+</div>

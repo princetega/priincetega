@@ -1,0 +1,63 @@
+<div class="main-content container-fluid">
+  <section class="section">
+    <div class="col-12 mt-3 mb-1">
+      <h4 class="section-title text-uppercase">Edit Profile</h4>
+      <p class="text-subtitle text-muted">A good dashboard to display your statistics</p>
+  </div>
+          <div class="row">
+              <div class="card col-lg-5">
+                <div class="card-body bg-gradient-secondary">
+                <div class="">
+                  <div class="alert alert-info result" style="display:none"></div>
+                  <p class="card-title">Update Details</p>
+          <form id="update_profile" ng-submit="update_profile()">
+          <div class="form-group">
+            <input type="hidden" name="user_id" value="{{user_data.id}}">
+          <input
+            type="text"
+            name="fullname"
+            id="fullname"
+            class="form-control"
+            placeholder="Full Name"
+            required
+            value="{{user_data.fullname}}"
+          />
+        </div>
+         <div class="form-group">
+             <input
+            type="text"
+            name="whatsapp"
+            id="whatsapp"
+            class="form-control"
+            placeholder="whatsapp"
+            value="{{user_data.whatsapp}}"
+            
+          />
+        </div>
+        <div class="form-group">
+            <input
+            type="text"
+            name="phone"
+            id="mobile"
+            class="form-control"
+            placeholder="Mobile Number"
+            value="{{user_data.phone}}"
+            
+          />
+        </div>
+        <div class="form-footer">
+            <button type="submit" class="btn btn-primary" id="">
+              Save Data
+            </button>
+          </div>
+                  </form>
+                    </div>
+
+                </div>
+              
+            </div>
+
+          </div>
+
+</section>
+</div>

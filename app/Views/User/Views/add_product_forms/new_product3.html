@@ -1,0 +1,66 @@
+<div class="form-group"  >
+    <select required=""  class="form-control" ng-model="phone" name="brand" ng-show="selected_subcategory.sub_id!=10 && selected_subcategory.sub_id!=11" ng-disabled="selected_subcategory.sub_id==10 && selected_subcategory.sub_id==11">
+     <option value="">SELECT PHONE MAKE</option>
+    <option  ng-repeat="phones in requiredPhone"  value="{{phones.make}}"> {{phones.make}} </option>
+   </select>
+ </div>
+<div class="form-group" ng-if="phone">
+<select id="model" name="model" class="form-control" required ng-show="selected_subcategory.sub_id!=10 && selected_subcategory.sub_id!=11" ng-disabled="selected_subcategory.sub_id==10 && selected_subcategory.sub_id==11">
+<optgroup  ng-repeat="phones in  requiredPhone | filter : {make:phone}" label="PHONE MODEL" >
+<option  ng-repeat="models in  phones.phone_models"  value="{{models.model}}"> {{ models.model}}             
+</option>
+</select> 
+</div>
+<div class="form-group">
+<label>Ram Size</label>
+<input type="text" name="ram" class="form-control" placeholder="Ram">
+</div>
+<div class="form-group">
+ <label>Internal Memory</label>
+<input type="text" name="internal_storage" class="form-control" placeholder="Internal Storage">
+</div>
+<div class="form-group">
+ <label>Number of Sim</label>
+<input type="number" name="sim" class="form-control" placeholder="Number of Sim">
+</div>
+<div class="form-group">
+ <label>Phone Resolution</label>
+<input type="text" name="resolution" class="form-control" placeholder="Resolution">
+</div>
+<div class="form-group">
+<label>Battery Capacity</label>
+<input type="text" name="battery" class="form-control" placeholder="Battery">
+</div>
+
+<div class="form-group row">
+    <label class="col-sm-3">Main Camera</label>
+    <div class="col-sm-4">
+        <label>
+          <input type="radio" name="main_camera" class="" value="No" checked>
+          No
+        </label>
+    </div>
+    <div class="col-sm-5">
+        <label>
+          <input type="radio" class=""  value="Yes"  name="main_camera">
+          Yes
+        </label>
+    </div>
+  </div>
+
+ 
+  <div class="form-group row">
+    <label class="col-sm-3">Sefies Camera</label>
+    <div class="col-sm-4">
+        <label>
+          <input type="radio" name="selfie_camera" class="" value="No" checked>
+          No
+        </label>
+    </div>
+    <div class="col-sm-5">
+        <label>
+          <input type="radio" class=""  value="Yes"  name="selfie_camera">
+          Yes
+        </label>
+    </div>
+  </div>

@@ -1,0 +1,507 @@
+<!-- to enable listing page call the relevant functions below inside usersController[append_modal_info, localStorage_save] -->
+<div class="content-wrapper" ng-controller="usersController">
+  <div class="page-header">
+    <h3 class="page-title">
+      <span class="page-title-icon bg-gradient-primary text-white mr-2">
+        <i class="mdi mdi-presentation-play"></i>
+      </span>
+      Ads/BLog {{admin_data.privilege}}
+    </h3>
+  </div>
+  <aside class="d-flex justify-content-end">
+    <p class="result text-center" style="display:none;"></p>
+  </aside>
+
+  <div ng-if="admin_data.privilege == '3' " class="row"  ng-init='get_blogs()'>
+    
+   
+    <div class="col-12 grid-margin rounded" >
+      <div class="card">
+        <div class="card-body" >
+          <div style="display: flex; justify-content: space-between;">
+             <h4 class="card-title">All listings</h4>
+          <button href="#" class="btn btn-sm btn-info"
+                      ng-click="localStorage_save('adsInfo',listing,'add_listing')">
+                       <span class="spinner-border text-light spinner-border-sm loader_listing_{{ listing.id }}" role="status" style="display: none;">
+                        <span class="sr-only">...loading</span>
+                      </span>
+
+                      <i class="mdi mdi-pen-plus"></i> Add
+                    </button>
+          </div>
+         
+          <div class="d-flex justify-content-center align-items-center">
+            <div class="spinner-border spinner-border-sm text-info " role="status" id="listing_loader" style="display: none;">
+              <span class="sr-only">...loading</span>
+            </div>
+          </div>
+
+          <div class="search-field d-none d-md-block my-3">
+            <form class="d-flex align-items-center h-100" action="#">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <i class="input-group-text border-0 mdi mdi-file-find"></i>
+                </div>
+                <input type="text" class="form-control" placeholder="search ads "
+                  ng-model="listingSearch">
+              </div>
+            </form>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Image</th>
+                  <th>
+                    Name<br /><span class="text-muted" style="font-size: 12px">unique code</span>
+                  </th>
+                  <th>
+                    Category <br />
+                  </th>
+                  <th>Created at</th>
+                  <th>Seller</th>
+                  <th>Control</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr dir-paginate="listing in all_listings | filter:listingSearch | itemsPerPage: pageSize"
+                  current-page="currentPage" ng-cloak>
+                  <td>{{($index +1) + (currentPage-1) * pageSize}}</td>
+                  <td>
+                    <img ng-init=" img = listing.image.split(',')"
+                      src="{{dirlocation}}/public/assets/images/uploads/blogs/{{img[0]}}" class="mr-2" />
+                  </td>
+                  <td>
+                    {{listing.title}}
+                    <span ng-switch="listing.status">
+                      <span ng-switch-when="1">
+                        <i class="mdi mdi-check-circle text-success"></i>
+                      </span>
+                      <span ng-switch-when="0">
+                        <i class="mdi mdi-close-circle text-danger"></i>
+                      </span>
+                      <span ng-switch-default>
+                      </span>
+                    </span>
+                    <br>
+                    <span class="text-muted" style="font-size: 12px">{{listing.product_code}}</span>
+                  </td>
+                  <td ng-init=" cate = listing.category.split(',')">
+                  
+                    <span ng-repeat="cats in cate" style="font-size: 12px" class="text-muted">{{ cats }}</span>
+                  </td>
+                  <td>{{listing.date_added }}</td>
+                  <td>
+                    {{listing.fullname}} <br /><span class="text-muted" style="font-size: 12px">{{
+                      listing.seller_phone }}</span>
+                  </td>
+                  <td>
+                    <!-- toggle enable account buttons -->
+                    <span ng-if="admin_data.privilege == ultra" ng-switch="listing.status" class="mr-1" data-toggle="modal"
+                      data-target=".disable-listing-modal" ng-click="append_modal_info(listing)">
+                      <span ng-switch-when="1">
+                        <button class="btn btn-sm btn-secondary">
+                          <span class="spinner-border text-light spinner-border-sm loader_listing_{{ listing.id }}" role="status" style="display: none;">
+                            <span class="sr-only">...loading</span>
+                          </span>
+                          <i class="mdi mdi-toggle-switch-off mr-1 icon_listing_{{ listing.id }}"></i>Hide
+                        </button>
+                      </span>
+                      <span ng-switch-when="0">
+                        <button class="btn btn-sm btn-success">
+                          <span class="spinner-border text-light spinner-border-sm loader_listing_{{ listing.id }}" role="status" style="display: none;">
+                            <span class="sr-only">...loading</span>
+                          </span>
+                          <i class="mdi mdi-toggle-switch mr-1 icon_listing_{{ listing.id }}"></i>Show
+                        </button>
+                      </span>
+                      <span ng-switch-default>
+                        none
+                      </span>
+                    </span>
+
+                    <!-- view user profile details -->
+
+                    <button href="#" class="btn btn-sm btn-info"
+                      ng-click="localStorage_save('adsInfo',listing,'single_listing')">
+                       <span class="spinner-border text-light spinner-border-sm loader_listing_{{ listing.id }}" role="status" style="display: none;">
+                        <span class="sr-only">...loading</span>
+                      </span>
+
+                      <i class=" mdi mdi-eye-check mr-1 icon_listing_{{ listing.id }}"></i> Views
+                    </button>
+                     <button href="#" class="btn btn-sm btn-info"
+                      ng-click="localStorage_save('adsInfo',listing,'edit_listing')">
+                       <span class="spinner-border text-light spinner-border-sm loader_listing_{{ listing.id }}" role="status" style="display: none;">
+                        <span class="sr-only">...loading</span>
+                      </span>
+
+                      <i class="mdi mdi-pen-plus"></i> Edit
+                    </button>
+                 
+
+                    <!-- delete user account control -->
+                    <view ng-if="admin_data.privilege == ultra" ng-controller="adminController">
+                      <button class="badge badge-danger" data-toggle="modal" data-target=".delete-user-modal"
+                        ng-click="append_modal_info(listing)">
+                        <i class="mdi mdi-delete-forever mr-1"></i> Delete
+                      </button>
+                    </view>
+                  </td>
+                </tr>
+              </tbody>
+
+           
+
+
+              <!-- delete ads modal -->
+              <div class="modal fade delete-user-modal" id="exampleModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="card">
+
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p class=" text-center display-1 text-danger"><i class="mdi mdi-delete"></i></p>
+                        <p class="display-4 text-center">
+                          You are about to DETETE
+                          <span class="text-danger">
+                            {{ info.name | uppercase}}
+                          </span> FOREVER !
+                        </p>
+                      </div>
+                      <div class="modal-footer">
+                        <!-- call delete function() -->
+                        <button ng-click="delete_blog(info.product_code)" class="btn btn-danger btn-sm"
+                          data-dismiss="modal">
+                          Delete ads !
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-sm " data-dismiss="modal">Cancel</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- end delete ads modal -->
+
+              <!-- disable listing modal -->
+              <div class="modal fade disable-listing-modal" id="exampleModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="card">
+
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p class=" text-center display-1 text-warning"><i class="mdi mdi-alert"></i></p>
+                        <p class="display-4 text-center">
+                          You are about to
+                          <span ng-switch="info.status">
+                            <span ng-switch-when="1">
+                              <span> hide </span>
+                            </span>
+                            <span ng-switch-when="0">
+                              <span> show </span>
+                            </span>
+                            <span ng-switch-default>
+                            </span>
+                          </span>
+                          <span class="text-info">
+                            {{ info.name | uppercase}}
+                          </span>
+                        </p>
+                      </div>
+                      <div class="modal-footer">
+
+                        <!-- call disable_enable() -->
+                        <span ng-switch="info.status" class="mr-1">
+                          <span ng-switch-when="1">
+                            <button ng-click="enable_or_disable_listing(0,info, $index)" class="btn btn-secondary btn-sm"
+                              data-dismiss="modal">
+                              Hide
+                            </button>
+                          </span>
+                          <span ng-switch-when="0">
+                            <button ng-click="enable_or_disable_listing(1,info, $index)" class="btn btn-success btn-sm"
+                              data-dismiss="modal">
+                              Show
+                            </button>
+                          </span>
+                          <span ng-switch-default>
+                            none
+                          </span>
+                        </span>
+
+                        <button type="button" class="btn btn-light btn-sm " data-dismiss="modal"><i
+                            class="mdi mdi-cancel mr-1"></i>Cancel</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end disable listing modal -->
+            </table>
+            <dir-pagination-controls boundary-links="true" template-url="" style="float: right">
+            </dir-pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+      <div ng-if="admin_data.privilege != '3' " class="row"  ng-init='agent_blogs()'>
+   
+    <div class="col-12 grid-margin rounded" >
+      <div class="card">
+        <div class="card-body" >
+          <h4 class="card-title">All listings</h4>
+             <button href="#" class="btn btn-sm btn-info"
+                      ng-click="localStorage_save('adsInfo',listing,'add_listing')">
+                       <span class="spinner-border text-light spinner-border-sm loader_listing_{{ listing.id }}" role="status" style="display: none;">
+                        <span class="sr-only">...loading</span>
+                      </span>
+
+                      <i class="mdi mdi-pen-plus"></i> Add
+                    </button>
+          <div class="d-flex justify-content-center align-items-center">
+            <div class="spinner-border spinner-border-sm text-info " role="status" id="listing_loader" style="display: none;">
+              <span class="sr-only">...loading</span>
+            </div>
+          </div>
+
+          <div class="search-field d-none d-md-block my-3">
+            <form class="d-flex align-items-center h-100" action="#">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <i class="input-group-text border-0 mdi mdi-file-find"></i>
+                </div>
+                <input type="text" class="form-control" placeholder="search ads "
+                  ng-model="listingSearch">
+              </div>
+            </form>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Image</th>
+                  <th>
+                    Name<br /><span class="text-muted" style="font-size: 12px">unique code</span>
+                  </th>
+                  <th>
+                    Category <br />
+                  </th>
+                  <th>Created at</th>
+                  <th>Seller</th>
+                  <th>Control</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr dir-paginate="listing in all_listings | filter:listingSearch | itemsPerPage: pageSize"
+                  current-page="currentPage" ng-cloak>
+                  <td>{{($index +1) + (currentPage-1) * pageSize}}</td>
+                  <td>
+                    <img ng-init=" img = listing.image.split(',')"
+                      src="{{dirlocation}}/public/assets/images/uploads/blogs/{{img[0]}}" class="mr-2" />
+                  </td>
+                  <td>
+                    {{listing.title}}
+                    <span ng-switch="listing.status">
+                      <span ng-switch-when="1">
+                        <i class="mdi mdi-check-circle text-success"></i>
+                      </span>
+                      <span ng-switch-when="0">
+                        <i class="mdi mdi-close-circle text-danger"></i>
+                      </span>
+                      <span ng-switch-default>
+                      </span>
+                    </span>
+                    <br>
+                    <span class="text-muted" style="font-size: 12px">{{listing.product_code}}</span>
+                  </td>
+                  <td ng-init=" cate = listing.category.split(',')">
+                  
+                    <span ng-repeat="cats in cate" style="font-size: 12px" class="text-muted">{{ cats }}</span>
+                  </td>
+                  <td>{{listing.date_added }}</td>
+                  <td>
+                    {{listing.seller_fullname}} <br /><span class="text-muted" style="font-size: 12px">{{
+                      listing.seller_phone }}</span>
+                  </td>
+                  <td>
+                    <!-- toggle enable account buttons -->
+                    <span ng-if="admin_data.privilege == ultra" ng-switch="listing.status" class="mr-1" data-toggle="modal"
+                      data-target=".disable-listing-modal" ng-click="append_modal_info(listing)">
+                      <span ng-switch-when="1">
+                        <button class="btn btn-sm btn-secondary">
+                          <span class="spinner-border text-light spinner-border-sm loader_listing_{{ listing.id }}" role="status" style="display: none;">
+                            <span class="sr-only">...loading</span>
+                          </span>
+                          <i class="mdi mdi-toggle-switch-off mr-1 icon_listing_{{ listing.id }}"></i>Hide
+                        </button>
+                      </span>
+                      <span ng-switch-when="0">
+                        <button class="btn btn-sm btn-success">
+                          <span class="spinner-border text-light spinner-border-sm loader_listing_{{ listing.id }}" role="status" style="display: none;">
+                            <span class="sr-only">...loading</span>
+                          </span>
+                          <i class="mdi mdi-toggle-switch mr-1 icon_listing_{{ listing.id }}"></i>Show
+                        </button>
+                      </span>
+                      <span ng-switch-default>
+                        none
+                      </span>
+                    </span>
+
+                    <!-- view user profile details -->
+
+                    <button href="#" class="btn btn-sm btn-info"
+                      ng-click="localStorage_save('adsInfo',listing,'single_listing')">
+                       <span class="spinner-border text-light spinner-border-sm loader_listing_{{ listing.id }}" role="status" style="display: none;">
+                        <span class="sr-only">...loading</span>
+                      </span>
+
+                      <i class=" mdi mdi-eye-check mr-1 icon_listing_{{ listing.id }}"></i> Views
+                    </button>
+                     <button href="#" class="btn btn-sm btn-info"
+                      ng-click="localStorage_save('adsInfo',listing,'edit_listing')">
+                       <span class="spinner-border text-light spinner-border-sm loader_listing_{{ listing.id }}" role="status" style="display: none;">
+                        <span class="sr-only">...loading</span>
+                      </span>
+
+                      <i class="mdi mdi-pen-plus"></i> Edit
+                    </button>
+                 
+
+                    <!-- delete user account control -->
+                    <view ng-if="admin_data.privilege == ultra" ng-controller="adminController">
+                      <button class="badge badge-danger" data-toggle="modal" data-target=".delete-user-modal"
+                        ng-click="append_modal_info(listing)">
+                        <i class="mdi mdi-delete-forever mr-1"></i> Delete
+                      </button>
+                    </view>
+                  </td>
+                </tr>
+              </tbody>
+
+           
+
+
+              <!-- delete ads modal -->
+              <div class="modal fade delete-user-modal" id="exampleModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="card">
+
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p class=" text-center display-1 text-danger"><i class="mdi mdi-delete"></i></p>
+                        <p class="display-4 text-center">
+                          You are about to DETETE
+                          <span class="text-danger">
+                            {{ info.name | uppercase}}
+                          </span> FOREVER !
+                        </p>
+                      </div>
+                      <div class="modal-footer">
+                        <!-- call delete function() -->
+                        <button ng-click="delete_blog(info.product_code)" class="btn btn-danger btn-sm"
+                          data-dismiss="modal">
+                          Delete ads !
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-sm " data-dismiss="modal">Cancel</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- end delete ads modal -->
+
+              <!-- disable listing modal -->
+              <div class="modal fade disable-listing-modal" id="exampleModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="card">
+
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p class=" text-center display-1 text-warning"><i class="mdi mdi-alert"></i></p>
+                        <p class="display-4 text-center">
+                          You are about to
+                          <span ng-switch="info.status">
+                            <span ng-switch-when="1">
+                              <span> hide </span>
+                            </span>
+                            <span ng-switch-when="0">
+                              <span> show </span>
+                            </span>
+                            <span ng-switch-default>
+                            </span>
+                          </span>
+                          <span class="text-info">
+                            {{ info.name | uppercase}}
+                          </span>
+                        </p>
+                      </div>
+                      <div class="modal-footer">
+
+                        <!-- call disable_enable() -->
+                        <span ng-switch="info.status" class="mr-1">
+                          <span ng-switch-when="1">
+                            <button ng-click="enable_or_disable_listing(0,info, $index)" class="btn btn-secondary btn-sm"
+                              data-dismiss="modal">
+                              Hide
+                            </button>
+                          </span>
+                          <span ng-switch-when="0">
+                            <button ng-click="enable_or_disable_listing(1,info, $index)" class="btn btn-success btn-sm"
+                              data-dismiss="modal">
+                              Show
+                            </button>
+                          </span>
+                          <span ng-switch-default>
+                            none
+                          </span>
+                        </span>
+
+                        <button type="button" class="btn btn-light btn-sm " data-dismiss="modal"><i
+                            class="mdi mdi-cancel mr-1"></i>Cancel</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end disable listing modal -->
+            </table>
+            <dir-pagination-controls boundary-links="true" template-url="" style="float: right">
+            </dir-pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  
+</div>

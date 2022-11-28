@@ -1,0 +1,76 @@
+<!--========== PARALLAX ==========-->
+        <div data-parallax="scroll" class="parallax">
+            <div class="parallax-content container">
+                <h1 class="carousel-title">Blog</h1>
+                <p> Our latest news, updates, and stories for developers</p>
+
+            </div>
+        </div>
+        <!--========== PARALLAX ==========-->
+
+       <!-- Our Exceptional Solutions -->
+        <div class="content-lg container">
+            <div class="row margin-b-20">
+                <div class="col-sm-12">
+                      <div class=" d-none d-md-block my-3">
+            <form style="float: right">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <i class="input-group-text border-0  fa fa-search"></i>
+                </div>
+                <input type="text" class="form-control" placeholder="search ads "
+                  ng-model="listingSearch">
+              </div>
+            </form>
+          </div>
+                </div>
+            </div>
+            <!--// end row -->
+
+            <div class="row margin-b-50 row-space-1" ng-init="fetch_all_blogs()">
+                <div class="loader" style="text-align:center">
+                        <img src="{{dirlocation}}public/assets/images/spinner.gif"
+                            style="width:40px;float:none;margin:0 auto">
+                    </div>
+                <!-- Our Exceptional Solutions -->
+                <div style="padding: 20px; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1), 0 3px 5px 0 rgba(0, 0, 0, 0.09); border-radius:10px;" class="col-sm-3 margin-b-50" dir-paginate="blog in all_blogs | filter:listingSearch | itemsPerPage: pageSize"
+                  current-page="currentPage" ng-cloak  >
+                    
+                        <div class="wow zoomIn margin-b-10" data-wow-duration=".3" data-wow-delay=".1s">
+                         <!--   <img class="img-responsive" src="img/970x647/01.jpg" alt="Our Exceptional Solutions Image"> -->
+                            <a  href="{{dirlocation}}home/fullpost:{{blog.product_code}}"
+                                        ng-init="img = blog.image.split(',')">
+                                        <div style="height:150px;overflow:hidden">
+                                            <img class="img-responsive" style="width: 100%!important; border-top-right-radius: 10px; border-top-left-radius: 10px; " alt="{{blog.title}}" 
+                                                src="{{dirlocation}}public/assets/images/uploads/blogs/{{img[0]}}">
+                                        </div>
+                                    </a>
+                        </div>
+                    
+                    <h4 style="font-size: 20px;" class="margin-b-5" ng-init=" cate = blog.category.split(',')"><a href="{{dirlocation}}home/fullpost:{{blog.product_code}}">{{blog.title}}</a> </h4>
+                    <p class="margin-b-10">{{blog.short_description}}</p>
+                    <div style="display: flex; align-items: center; font-size: 10px" class="margin-b-10">
+                        <img  style="width: 40px; height: 40px; border-radius: 50px; margin-right: 20px "
+                              alt="{{ blog.fullname }}" loading="lazy" class=" d-block  w-25 mx-auto"                  src="{{dirlocation}}public/assets/images/uploads/blogs/{{img[0]}}">
+                        <div style="margin-right: 10px">
+
+                            <a style="text-decoration: underline;" href="{{dirlocation}}home/agentpost:{{blog.admin_id}}">{{blog.fullname | uppercase}}</a><br>
+                            <p style="font-size: 12px">{{blog.date_added | myDateFormat}}</p>
+                        </div>
+                    </div>
+
+                    <span ng-repeat="cats in cate"  class="text-uppercase margin-b-20" style="direction: flex; margin-right: 5px"><a class="badge badge-info  mt-2 p-2 d-inline-block" style="font-size: 8px" href="{{dirlocation}}home/blogcat:{{cats}}">{{cats}}</a></span>
+                    
+                </div>
+                <!-- End Our Exceptional Solutions -->
+
+               
+            </div>
+            
+             <dir-pagination-controls boundary-links="true" template-url="" style="float: right">
+            </dir-pagination-controls>
+            <!--// end row -->
+        </div>
+        <!-- End Our Exceptional Solutions -->
+ 
+        <!--========== END PAGE LAYOUT ==========-->

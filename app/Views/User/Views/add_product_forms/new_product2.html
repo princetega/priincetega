@@ -1,0 +1,20 @@
+<div class="form-group" ng-show="selected_subcategory.sub_id>43">
+    
+      <label>Select Property Type</label>
+      <select required="" ng-disabled="selected_subcategory.sub_id<44" class="form-control" name="property_type">
+      <option value="">Select Property Type</option>
+      <option  ng-repeat="Property in  requiredProperty"  value="{{ Property.type }}"> {{ Property.type }} </option>
+     </select>
+    </div>
+  <div class="form-group" ng-hide="selected_subcategory.sub_id==44 || selected_subcategory.sub_id==45">
+    <label>Number of Bathrooms</label>
+    <input type="number" name="number_of_bathrooms" ng-disabled="selected_subcategory.sub_id==44 || selected_subcategory.sub_id==45" class="form-control" placeholder="Number of Bathrooms">
+   </div>
+  <div class="form-group" ng-hide="selected_subcategory.sub_id==44 || selected_subcategory.sub_id==45">
+   <label>Number of Bedrooms</label>
+    <input type="number" name="number_of_bedrooms" ng-disabled="selected_subcategory.sub_id==44 || selected_subcategory.sub_id==45" class="form-control" placeholder="Number of Bedrooms">
+   </div>
+  <div class="form-group">
+  <label>Property Size</label>
+  <input type="text" name="Property_size" class="form-control" placeholder="Property Size">
+   </div>

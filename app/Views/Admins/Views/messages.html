@@ -1,0 +1,38 @@
+
+        <div class="main-content container-fluid">
+          <section class="section">
+            <div class="col-12 mt-3 mb-1">
+              <h4 class="section-title text-uppercase">Clients Messages</h4>
+              <p class="text-subtitle text-muted">A good dashboard to display your statistics</p>
+          </div>
+              <div class="card">
+                  <div class="card-body">
+                      <table class='table table-striped' id="table1" ng-init="fetch_all_messages_to_seller()">
+                          <thead>
+                              <tr>
+                                  <th>SN</th>
+                                  <th>Sender Details</th>
+                                  <th>Product Details</th>
+                                  <th>Message</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                            ` <tr ng-repeat="message in messages">
+                              <td>{{$index + 1}}</td>
+                              <td><span style="font-weight: bold;">{{message.sender_name}}</span><br/>
+                              {{message.sender_email}} | {{message.sender_phone}} </td>
+                              <td ng-init="img = message.image.split(',')">
+                              <img style="width:30px;height:30px;margin-right:6px;border-radius:25%" src="{{dirlocation}}public/assets/images/uploads/products/{{img[0]}}" class="thumbnail"><br/>
+                                <span style="font-weight: bold;">{{message.name}}</span><br/>{{message.price| currency:"NGN "}}</td>
+                              <td>{{message.message}}</td>
+                              </tr>
+
+                              
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+
+          </section>
+      </div>
+

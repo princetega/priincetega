@@ -1,0 +1,50 @@
+ <!--========== PARALLAX ==========-->
+ <div >
+        <div class="parallaxss" style="background: url({{dirlocation}}public/assets/img/strategy/locate-us.jpg) no-repeat; background-size: cover;
+  background-position: bottom;
+   min-height: 620px;
+   background-attachment: fixed;" data-parallax="scroll">
+            <div class="parallax-content container">
+                <h3 class="carousel-title">Training with Tega </h3>
+                <p>We are a small team with a huge impact on communities we serve, we provide opportunities in tech inclined careers.</p>
+               
+            </div>
+        </div>
+        <!--========== PARALLAX ==========-->
+
+        <!--========== PAGE LAYOUT ==========-->
+        <!-- Features -->
+        <div class="">
+            <div class="content-lg container">
+                <div class="row margin-b-20" >
+                    <div  class="margin-b-50 col-sm-8  bg-color-sky-light   train-container" >
+                      <div class="row">
+                          <div class="col-sm-12 sm-margin-b-30 bg-color-light">
+                            <div style="text-align: center">
+                                 <img  width="60" height="60" title="Web and Mobile app development, web design, mobile developer" class="" alt="Web and Mobile app development, web design, mobile developer" src="{{dirlocation}}public/assets/img/strategy/our-company.png">
+                                 <h4 style="margin: 20px 0">We're a flat Company</h4>
+                                 <p>Sure we have various careers in our company, but you won’t find a Special Assistant, Vice-President & Co-Manager of Organizational Analysis here. What you will find are open doors and open minds. You’ll find a group of peers that respect your opinions and ideas no matter what your role is. </p>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    
+                </div>
+                <h2 class="text-center margin-b-50">We're a flat Company</h2>
+                  <div class="row" ng-init="fetch_all_training()">
+                          <div ng-repeat="training in all_training" class="col-sm-4 sm-margin-b-30 bg-color-light training">
+                            <div >
+                                 
+                                 <h4 >{{training.title}}</h4>
+                                 <p>{{training.description}} </p>
+                                 <a href="">View training Details</a>
+                                 <a style="text-decoration: underline;" href="{{dirlocation}}home/trainee-registration:{{training.id}}">{{blog.fullname | uppercase}}1</a>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        
+        </div>
+        <!-- End Features -->
+
+        

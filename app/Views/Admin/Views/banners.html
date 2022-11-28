@@ -1,0 +1,349 @@
+<main class="content-wrapper" ng-controller="usersController">
+
+  <div class="page-header">
+    <h3 class="page-title">
+      <span class="page-title-icon bg-gradient-primary text-white mr-2">
+        <i class="mdi mdi-flag "></i>
+      </span> Banners
+    </h3>
+  </div>
+  <div class="d-flex justify-content-center align-items-center mb-2">
+    <div class="spinner-border text-info spinner-border-sm" role="status" id="banner_loader" style="display: none;">
+      <span class="sr-only">...loading</span>
+    </div>
+  </div>
+
+  <aside class="d-flex justify-content-end">
+    <p class="result text-center" style="display: none"></p>
+  </aside>
+  <section class="row" ng-init="fetch_all_banners()">
+
+    <article class="col-12 grid-margin">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">All Banners</h4>
+          <div class="search-field d-none d-md-block my-3">
+            <form class="d-flex align-items-center h-100" action="#">
+              <div class="input-group">
+                <div class="input-group-prepend bg-transparent">
+                  <i class="input-group-text border-0 mdi mdi-file-find"></i>
+                </div>
+                <input type="text" class="form-control bg-transparent border-0" placeholder="search for banner "
+                  ng-model="bannerSearch">
+              </div>
+            </form>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Title</th>
+                  <th>Description</th>
+                  <th>Type</th>
+                  <th>State</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr dir-paginate="banner in all_banners | filter:bannerSearch | itemsPerPage: pageSize"
+                  current-page="currentPage" ng-cloak>
+                  <td>{{($index +1) + (currentPage-1) * pageSize}}</td>
+                  <td>
+                    <img src="{{dirlocation}}/public/assets/images/uploads/banners/{{banner.image}}" class="mr-2" />
+                    <span>
+                      {{banner.title}}
+                    </span>
+                    <span ng-switch="banner.status">
+                      <span ng-switch-when="1">
+                        <i class="mdi mdi-check-circle text-success"></i>
+                      </span>
+                      <span ng-switch-when="0">
+                        <i class="mdi mdi-close-circle text-danger"></i>
+                      </span>
+                      <span ng-switch-default>
+                        none
+                      </span>
+                    </span>
+                  </td>
+
+                  <td>
+
+                    {{ banner.description | limitTo : 25 }}{{ banner.description.length > 25 ? "..." : '' }}
+                  </td>
+                  <td>
+                    <div ng-switch="banner.type">
+                      <span ng-switch-when="1">
+                        <span class="badge badge-info">TOP</span>
+                      </span>
+                      <span ng-switch-when="2">
+                        <span class="badge badge-success">MAIN</span>
+                      </span>
+                      <span ng-switch-when="3">
+                        <span class="badge badge-danger">SIDE</span>
+                      </span>
+                      <span ng-switch-default>
+                        none
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    <span ng-switch="banner.status">
+                      <span ng-switch-when="1">
+                        <i class="mdi mdi-eye text-success"></i>
+                      </span>
+                      <span ng-switch-when="0">
+                        <i class="mdi mdi-eye-off text-secondary"></i>
+                      </span>
+                      <span ng-switch-default>
+                        none
+                      </span>
+                    </span>
+
+                  </td>
+                  <td>
+                    <!-- toggle enable account buttons -->
+                    <span ng-switch="banner.status" class="mr-1 " data-toggle="modal"
+                      data-target=".disable-banner-modal" ng-click="append_modal_info(banner)">
+                      <span ng-switch-when="1">
+                        <button class="btn btn-sm btn-secondary">
+                          <span class="spinner-border text-light spinner-border-sm banner_loader_{{ banner.banner_id }}" role="status" style="display: none;">
+                            <span class="sr-only">...loading</span>
+                          </span>
+                          <i class="mdi mdi-toggle-switch-off mr-1 icon_{{ banner.banner_id }}"></i> Hide
+                        </button>
+                      </span>
+                      <span ng-switch-when="0">
+                        <button class="btn btn-sm btn-success">
+                          <span class="spinner-border text-light spinner-border-sm banner_loader_{{ banner.banner_id }}" role="status" style="display: none;">
+                            <span class="sr-only">...loading</span>
+                          </span>
+                          <i class="mdi mdi-toggle-switch-off mr-1 icon_{{ banner.banner_id }}"></i> Show
+                        </button>
+                      </span>
+                      <span ng-switch-default>
+                        none
+                      </span>
+                    </span>
+
+                    <!-- delete user account control -->
+                    <!-- <button class="badge badge-danger  mr-1" data-toggle="modal" data-target=".delete-banner-modal"
+                      ng-click="append_modal_info(banner)">
+                      <i class="mdi mdi-delete-forever mr-1"></i> Delete
+                    </button> -->
+                    <button class="btn btn-sm btn-info mr-1" data-toggle="modal" data-target=".edit-modal"
+                      ng-click="append_modal_info(banner)">
+                      <span class="spinner-border text-light spinner-border-sm banner_edit_loader_{{ banner.banner_id }}" role="status" style="display: none;">
+                        <span class="sr-only">...loading</span>
+                      </span>
+                      <i class="mdi  mdi-pencil-lock mr-1 icon_edit_{{ banner.Banner_id }}"></i> Edit
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+              <!-- disable banner modal -->
+              <div class="modal fade disable-banner-modal" id="exampleModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="card">
+
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p class=" text-center display-1 text-warning"><i class="mdi mdi-alert"></i></p>
+                        <p class="display-4 text-center">
+                          You are about to
+                          <span ng-switch="info.status">
+                            <span ng-switch-when="1">
+                              <span> hide </span>
+                            </span>
+                            <span ng-switch-when="0">
+                              <span> show </span>
+                            </span>
+                            <span ng-switch-default>
+                            </span>
+                          </span>
+                          <span class="text-info">
+                            {{ info.title| uppercase}}
+                          </span>
+                        </p>
+                      </div>
+                      <div class="modal-footer">
+
+                        <!-- call disable_enable() -->
+                        <span ng-switch="info.status" class="mr-1">
+                          <span ng-switch-when="1">
+                            <button ng-click="enable_or_disable_banner(0,info, $index)" class="btn btn-secondary btn-sm"
+                              data-dismiss="modal">
+                              Hide
+                            </button>
+                          </span>
+                          <span ng-switch-when="0">
+                            <button ng-click="enable_or_disable_banner(1,info,$index)" class="btn btn-success btn-sm"
+                              data-dismiss="modal">
+                              Show
+                            </button>
+                          </span>
+                          <span ng-switch-default>
+                            none
+                          </span>
+                        </span>
+
+                        <button type="button" class="btn btn-light btn-sm " data-dismiss="modal"><i
+                            class="mdi mdi-cancel mr-1"></i>Cancel</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end disable banner modal -->
+
+              <!-- delete banner modal -->
+              <div class="modal fade delete-banner-modal" id="exampleModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="card">
+
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p class=" text-center display-1 text-danger"><i class="mdi mdi-delete"></i></p>
+                        <p class="display-4 text-center">
+                          You are about to DELETE
+                          <span class="text-danger">
+                            {{ info.title | uppercase}}
+                          </span>
+                        </p>
+                      </div>
+                      <div class="modal-footer">
+
+                        <!-- call delete function() -->
+                        <button ng-click="delete_bannners(info.id)" class="btn btn-danger btn-sm" data-dismiss="modal">
+                          Delete banner
+                        </button>
+                        <button type="button" class="btn btn-light btn-sm " data-dismiss="modal">
+                          <span class="spinner-border text-light spinner-border-sm banner_edit_loader_{{ info.id }}" role="status" style="display: none;">
+                            <span class="sr-only">...loading</span>
+                          </span>
+                          <i class="mdi mdi-cancel mr-1"></i>Cancel</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end delete banner modal -->
+
+            </table>
+            <dir-pagination-controls boundary-links="true" template-url="" style="float: right">
+            </dir-pagination-controls>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="col-sm-12 col-md-8 grid-margin">
+      <div class="card">
+        <div class="d-flex justify-content-center align-items-center mt-4">
+          <div class="spinner-border text-info spinner-border-sm" role="status" id="banner_loader" style="display: none;">
+            <span class="sr-only">...loading</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <h4 class="card-title p-2 mb-4">Create New Banner</h4>
+          <div class="alert alert-warning result2" style="display: none;"></div>
+          <form ng-submit="create_new_banner()" id="create_new_banner">
+
+            <div class="form-group " ng-init="fetch_banner_types()">
+              <label " for=" banner_type">Banner Type</label>
+              <select class="form-control" ng-model="banner_type" ng-change="onBannerValueChange(banner_type)" id="banner_type" required>
+                <option value="">SELECT BANNER TYPE</option>
+                <option value="{{type}}" ng-repeat="type in banner_types">{{type.title}}</option>
+              </select>
+            </div>
+           
+            <div class="alert alert-info" ng-show="selected_banner">{{selected_banner.description}}</div>
+            <div class="form-group">
+              <label for="title">Title:</label>
+              <input type="text" class="form-control " placeholder="banner title" name="title" id="title" required>
+            </div>
+            <div class="form-group">
+              <label for="description">Description:</label>
+              <textarea type="text" class="form-control " placeholder="banner description" name="description"
+                id="description"></textarea>
+
+            </div>
+            <div class="form-group mt-2">
+
+              <label>Image</label>
+              <input type="file" name="files[]" id="image" multiple class="form-control file-upload-info"
+                placeholder="Upload Image" required>
+            </div>
+            <input type="hidden" value="{{selected_banner.type_id}}" name="banner_type">
+            <input type="hidden" value="{{selected_banner.width}}" name="banner_width">
+            <input type="hidden" value="{{selected_banner.height}}" name="banner_height">
+            <button type="submit" class="btn btn-info btn-sm"><i class="mdi mdi-book-plus mr-2"></i>Submit</button>
+          </form>
+        </div>
+      </div>
+    </article>
+  </section>
+  <!--  edit modal -->
+  <div class="modal fade edit-modal" id="exampleModalCenter" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="card">
+
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <img src="{{dirlocation}}/public/assets/images/uploads/banners/{{info.image}}" alt="{{ info.title }}"
+              loading="lazy" class=" d-block w-50 mx-auto" />
+            <div class="card p-3">
+              <aside class="d-flex justify-content-end">
+                <p class="result-edit text-center" style="display: none"></p>
+              </aside>
+              <form ng-submit="update_banner(info.banner_id)" id="update_banner">
+                <div class="col-12">
+                  <input type="text" name="id" hidden value="{{ info.banner_id }}" required />
+                  <div class="form-group">
+                    <label for="title"> Title</label>
+                    <input type="text" class="form-control" name="title" id="title" placeholder="banner title"
+                      value="{{ info.title }}" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="description"> Description</label>
+                    <textarea type="text" class="form-control" name="description" id="description"
+                      placeholder="banner description">{{ info.description }}</textarea>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-info btn-sm">
+                    <span class="spinner-border text-light spinner-border-sm banner_edit_loader_{{ info.banner_id }}" role="status" style="display: none;">
+                      <span class="sr-only">...loading</span>
+                    </span>
+                    Update
+                  </button>
+                  <button type="button" class="btn btn-light btn-sm ml-auto" data-dismiss="modal">
+                    
+                    <i class="mdi mdi-cancel mr-1"></i>Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end edit modal -->

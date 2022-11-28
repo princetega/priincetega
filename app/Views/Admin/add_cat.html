@@ -1,0 +1,171 @@
+<main class="main" ng-controller="homeController">
+			<nav aria-label="breadcrumb" class="breadcrumb-nav">
+				<div class="container">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
+						<li class="breadcrumb-item active" aria-current="page">Add Category</li>
+					</ol>
+				</div><!-- End .container -->
+			</nav>
+
+			<div class="container">
+				<div class="row">
+					<?php require_once '../app/views/inc/aside1.php';?>
+					<div class="col-lg-9 order-lg-last dashboard-content">
+					
+
+						<h3>Add Category</h3>
+
+						
+						<div class="card" ng-show="add">
+							<div class="card-header">
+								Category
+								<a href="" ng-click="viewed()" class="card-edit">View All</a>
+							</div><!-- End .card-header -->
+
+							<div class="card-body">
+							 <form ng-submit="add_category()" id="add_category"  method="POST" action="">  
+       <input
+          type="text"
+          name="title"
+          id="title"
+          class="form-control"
+          require
+          placeholder="Title"
+          
+      
+        />
+      
+           <input
+          type="file"
+          name="file"
+          id="file"
+          class="form-control"
+          require
+         
+          
+      
+        />
+
+
+        <div class="form-footer">
+          <button type="submit" class="btn btn-primary">Add</button>
+         
+        </div>
+        <!-- End .form-footer -->
+      </form>
+							</div><!-- End .card-body -->
+						</div><!-- End .card -->
+        	<div class="card"  ng-show="view">
+							<div class="card-header">
+								Category
+								<a href="" ng-click="added()" class="card-edit">Add Category</a>
+							</div><!-- End .card-header -->
+
+							<div class="card-body">
+								<div class="table-responsive">
+		<table class="table table-striped table-bordered" ng-init="fetch_all_category()">
+			<thead>
+			<tr>
+				<th>Title</th>
+				<th>Image</th>
+				<th>Edit</th>
+				<th>Delete</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+			<tr dir-paginate="category in categories | itemsPerPage:5">
+					
+            	<td>{{category.title }}</td>
+            	<td><img style="width: 100px!important; height: 100px!important;" src="assets/images/uploads/category/{{ category.image }}">
+            		</td>
+            	
+             
+             
+                <td><button class="cbtn"   data-cid1="{{category.id}}"  data-cid2="{{category.title}}"  title="Like" ><span class ='badge badge-primary badge-pill '>Edit Category</span></button></td> 
+                 <td><button class="dbtn"  ng-click="deleteCategory()"  data-did="{{category.id}}" ><span class ='badge badge-danger badge-pill '>Delete Category</span></button></td> 
+            
+               
+               
+				
+			</tr>
+			
+			
+		</tbody>
+		</table>
+		<div align="center">
+		<dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
+	</div>
+	</div>
+
+		
+	
+							</div><!-- End .card-body -->
+						</div><!-- End .card -->
+
+					</div><!-- End .col-lg-9 -->
+
+					
+				</div><!-- End .row -->
+			</div><!-- End .container -->
+
+			<div class="mb-5"></div><!-- margin -->
+		</main><!-- End .main -->
+
+		 <div
+      class="modal fade"
+      id="update"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="addCartModal"
+      aria-hidden="true"
+      ng-controller="homeController"
+
+    >
+      <div class="modal-dialog" role="document" >
+        <div class="modal-content">
+          <div class="modal-body text-center">
+          	<h3>Update Category</h3>
+      <form ng-submit="updateCategory()" id="updateCategory"  method="POST" action="">  
+      	<div class="report"></div>
+       <input
+          type="text"
+          name="titles"
+          id="titles"
+          class="form-control"
+          require
+          
+          value=""
+          
+      
+        />
+      
+           <input
+          type="file"
+          name="file"
+          id="file"
+          class="form-control"
+          require
+         
+          
+      
+        />
+        <input type="hidden" name="id" id="id" value="">
+
+
+        <div class="form-footer">
+          <button type="submit" class="btn btn-primary">Add</button>
+          <button class="btn-primary" data-dismiss="modal">
+                  Continue
+                </button>
+         
+        </div>
+        <!-- End .form-footer -->
+      </form>
+            
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

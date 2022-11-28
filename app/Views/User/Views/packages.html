@@ -1,0 +1,79 @@
+
+ <div class="main-content container-fluid" ng-init="init()">
+  <div class="page-title">
+      <div class="row">
+          <div class="col-12 col-md-6 order-md-1 order-last">
+              <h3>Account Packages</h3>
+              <p class="text-subtitle text-muted">Nice pricing list that you can use for sell some stuff.
+              </p>
+          </div>
+          <div class="col-12 col-md-6 order-md-2 order-first">
+              <nav aria-label="breadcrumb" class='breadcrumb-header'>
+                  <ol class="breadcrumb">
+                      <li class="breadcrumb-item"><a href="{{dirlocation}}dashboard">Dashboard</a></li>
+                      <li class="breadcrumb-item active" aria-current="page">Pricing</li>
+                  </ol>
+              </nav>
+          </div>
+      </div>
+      <div ng-if="!paymentResponseWindow" class="col-lg-12 col-md-6" style="text-align: center;margin-bottom: 10px">
+        <h4>Please select an account package</h4>
+      </div>
+
+  </div>
+  <section class="section" ng-if="paymentResponseWindow">
+    <div class="col-lg-5" style="float:none;margin:0 auto">
+    <div style="text-align:center" ng-show="reference_check">
+    <h5>  
+    <span ng-show="reference_data.trans_status=='success'">
+    Your Transaction was successful. Your transaction reference is {{reference_data.trans_reference}}.<br/><br/>
+    <p style="margin-top:10px"> Your account have been migrated to a <span class="badge bg-secondary">{{user_data.seller_account_details.title | uppercase}}</span> successfully
+    </p>
+    </span>
+    </h5>
+    <span ng-show="reference_data.trans_status!='success'">
+    <img src="{{dirlocation}}public/assets/images/cancel_file.png" style="width:70px;float:none;margin:0 auto"><br/>  
+    Your Transaction was <span style="color:#f30">NOT</span> successful. Your transaction reference is {{reference_data.trans_reference}}
+    </span>
+    </div>
+    <h4 style="text-align:center" ng-show="!reference_check">This transaction reference {{routeParams.reference}} is invalid.</h4>
+  </div>
+  </section>
+
+  <section class="section" ng-init="fetch_account_packages()" ng-if="!paymentResponseWindow">
+    <div style="text-align: center;" class="loader">
+      <img src="{{dirlocation}}public/assets/images/spinner4.gif" style="width:80px">
+    </div>
+      <div class="row">
+          <div class="col-md-12">
+              <div class="pricing">
+                  <div class="row align-items-center">
+                      <div class="col-md-3 px-0"ng-repeat="package in packages">
+                          <div class="card " ng-class="{'card-highlighted' : $index=='2'}">
+                              <div class="card-header text-center">
+                                  <h4 class='card-title'>{{package.title}}</h4> 
+                              </div>
+                             
+                              <ul>
+                                <li ng-repeat="list in package.package_contents"><i data-feather="check-circle"></i> {{list.content_body}}</li>
+                              </ul>
+                              <h4 class="price" style="text-align: center;" ng-class="{'text-white' : $index=='2'}"><span ng-if="package.value!='0'">{{package.value | currency:'NGN '}} <br/><span style="font-size:12px">per {{package.duration_in_days}} days</span></span><span ng-if="package.value=='0'">Free</span></h4>
+                              <div class="card-footer">
+                                  <button class="btn btn-secondary btn-block" ng-click="choose_package(package)">Order Now</button>
+                              </div>
+                          </div>
+                      </div>
+                     
+                      
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="col-lg-12" style="text-align: center;margin-top:15px" ng-show="selectedOption">
+        <button type="button" ng-click="payWithPaystack()" class="btn btn-primary" id=""><img src="{{dirlocation}}public/assets/images/spinner2.gif" class="pay_loader" style="width:15px;display:none"> {{selectedOptionText}}</button><br/>
+
+        <img ng-show="selectedOption.package_id!='1'"src="{{dirlocation}}public/assets/images/paystack_secured.png" style="margin-top:25px">
+      </div>
+</div>
+<script src="https://js.paystack.co/v1/inline.js"></script>
+          

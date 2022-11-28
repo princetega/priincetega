@@ -1,0 +1,104 @@
+ <!--========== PARALLAX ==========-->
+ <div ng-init="fetch_single_blog()" ng-cloak>
+        <div class="parallaxs" style="background: url({{dirlocation}}public/assets/images/uploads/blogs/{{sblog.image}}) no-repeat; background-size: cover;
+  background-position: bottom;
+   max-height: 500px;
+   background-attachment: fixed;" data-parallax="scroll" >
+            <div class="parallax-content container">
+                <h3 class="carousel-title">{{sblog.title}}</h2>
+                <h4 style="color: white;" >By  <a style="color: white" href="{{dirlocation}}home/agentpost:{{sblog.admin_id}}">{{sblog.fullname | uppercase}}</a></h4>
+            </div>
+        </div>
+        <!--========== PARALLAX ==========-->
+
+        <!--========== PAGE LAYOUT ==========-->
+        <!-- Features -->
+        <div class="">
+            <div class="content-lg container">
+                <div class="row">
+                    <div class="col-sm-12 margin-b-50">
+                         <h4 ng-init=" ct = sblog.category.split(',')">{{sblog.short_description}} {{sblog.category}}</h4>
+                        <div class="post-meta" >
+                                            <span><i class="fa fa-user"></i> Category: <span ng-repeat="cts in ct"  class="text-uppercase margin-b-20" style="direction: flex; margin-right: 5px"><a class="badge badge-info  mt-2 p-2 d-inline-block" style="font-size: 8px" href="{{dirlocation}}home/blogcat:{{cts}}">{{cts}}</a></span>  </span>
+                                            <span><i class="fas fa-folder"></i> Published on: <a href="#">{{sblog.date_added | myDateFormat}}
+                                            </a> 
+                                            </span>
+                                            
+                                        </div>
+                      
+                    </div>
+
+                    <div class="col-sm-12 sm-margin-b-50"  ng-bind-html="sblog.long_description">
+                      
+                    </div>
+                  
+                    </div>
+                </div>
+                <!--// end row -->
+            </div>
+                <div class="row margin-b-40">
+               
+                <div class="col-sm-12" ng-cloak ng-if="relatedBlog == ''" style="text-align:center;padding-top:20px">
+                    <h2></h2>
+                    <p> <img src="{{dirlocation}}public/assets/images/cancel_file.png" style="width:80px;float:none;margin:0 auto">
+                            No related posts  yet.. </p>
+                </div>
+            </div>
+
+               <!-- Our Exceptional Solutions -->
+       <div ng-if="relatedBlog.length > 0" class="bg-color-sky-light">        
+        <div class="content-lg container">
+       <div  class="row margin-b-40">
+                <div class="col-sm-8">
+                    <h2>Related Posts </h2>
+                    
+                </div>
+            </div>
+            
+
+
+            <div class="row margin-b-50 row-space-1" >
+               
+                <!-- Our Exceptional Solutions -->
+                <div style="padding: 20px; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1), 0 3px 5px 0 rgba(0, 0, 0, 0.09); border-radius:10px;" class="col-sm-3 margin-b-50" dir-paginate="blog in relatedBlog | filter:listingSearch | itemsPerPage: pageSize"
+                  current-page="currentPage" ng-cloak  >
+                    
+                        <div class="wow zoomIn margin-b-10" data-wow-duration=".3" data-wow-delay=".1s">
+                         <!--   <img class="img-responsive" src="img/970x647/01.jpg" alt="Our Exceptional Solutions Image"> -->
+                            <a  href="{{dirlocation}}home/fullpost:{{blog.product_code}}"
+                                        ng-init="img = blog.image.split(',')">
+                                        <div style="height:150px;overflow:hidden">
+                                            <img class="img-responsive" style="width: 100%!important; border-top-right-radius: 10px; border-top-left-radius: 10px; " alt="{{blog.title}}" 
+                                                src="{{dirlocation}}public/assets/images/uploads/blogs/{{img[0]}}">
+                                        </div>
+                                    </a>
+                        </div>
+                    
+                    <h4 style="font-size: 20px;" class="margin-b-5" ng-init=" cate = blog.category.split(',')"><a href="{{dirlocation}}home/fullpost:{{blog.product_code}}">{{blog.title}}</a> </h4>
+                    <p class="margin-b-10">{{blog.short_description}}</p>
+                    <div style="display: flex; align-items: center; font-size: 10px" class="margin-b-10">
+                        <img  style="width: 40px; height: 40px; border-radius: 50px; margin-right: 20px "
+                              alt="{{ blog.fullname }}" loading="lazy" class=" d-block  w-25 mx-auto"                  src="{{dirlocation}}public/assets/images/uploads/blogs/{{img[0]}}">
+                        <div style="margin-right: 10px">
+                             <a style="text-decoration: underline;" href="{{dirlocation}}home/agentpost:{{blog.admin_id}}">{{blog.fullname | uppercase}}1</a><br>
+                            <p style="font-size: 12px">{{blog.date_added | myDateFormat}}</p>
+                        </div>
+                    </div>
+
+                    <span ng-repeat="cats in cate"  class="text-uppercase margin-b-20" style="direction: flex; margin-right: 5px"><a class="badge badge-info  mt-2 p-2 d-inline-block" style="font-size: 8px" href="{{dirlocation}}home/blogcat:{{cats}}">{{cats}}</a></span>
+                    
+                </div>
+                <!-- End Our Exceptional Solutions -->
+
+               </div>
+            </div>
+            
+            <!--// end row -->
+        </div>
+
+
+        </div>
+
+           
+       
+

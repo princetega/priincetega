@@ -1,0 +1,93 @@
+<div class="content-wrapper" ng-controller="usersController" ng-init="localStorage_get('adsInfo')">
+    <div class="page-header">
+        <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white mr-2">
+                <i class="mdi mdi-presentation-play"></i>
+            </span>
+            Edit | {{ adsInfo.title | uppercase }} 
+
+        </h3>
+    </div>
+    <div class="row" ng-init="fetch_all_blogs_of_admin(adsInfo.admin_id)">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body bg-light">
+                    <div class="row">
+                        <div class="col-12">
+                        
+                      <div class="card p-3">
+                             <div ng-if="adsInfo.image.length > 0">
+                        <img src="{{dirlocation}}/public/assets/images/uploads/projects/{{adsInfo.image}}"
+                          alt="{{ info.title }}" loading="lazy" class=" d-block w-25 mx-auto" />
+                      </div>
+                        <aside class="d-flex justify-content-center">
+                          <p class="alert alert-info result-c text-center" style="display: none"></p>
+                        </aside>
+                             <form id="updateProject" ng-submit="update_project(adsInfo.id)">
+                          <div class="row">
+                            <div class="col-12">
+                              <div class="form-group mt-2">
+                                <label for="files[]">Replace Icon </label>
+                                <input type="file" name="files[]" multiple class="form-control file-upload-info"
+                                  placeholder="replace category icon">
+                                <sup class="text-danger">*Only jpg and png are supported*</sup>
+                              </div>
+                              <div class="form-group">
+                                <label for="title"> Project Title</label>
+                                <input type="text" class="form-control" name="title" id="title"
+                                  placeholder="category update name" value="{{ adsInfo.title }}" required />
+                                <input type="hidden" name="id" id="id"  value="{{ adsInfo.id }}" required />
+
+                                
+                              </div>
+                  
+                
+                 <div class="form-group">
+                  <label for="title">Details</label>
+                  <textarea ui-tinymce="tinymceOptions" ng-model="adsInfo.details" class="text1 form-control" required name="details"rows="4" placeholder="Details"
+                  >{{adsInfo.details}}</textarea>
+                </div>
+                 <input type="hidden" name="id" id="id" value="{{adsInfo.id}}">
+      
+                   <input type="hidden" id="p_i" name="p_i" value="{{adinfo.image}}">
+                   <div ng-if="info.image.length > 0">
+                                    
+                                  <input type="hidden" name="previous_image"  id="previous_image"
+                                    value="{{ adsInfo.image }}" required />
+                                </div>
+                            </div>
+                          </div>
+                          
+                            <span>
+
+                              <button type="submit" class="btn btn-info btn-sm">
+                                <span class="spinner-border text-light spinner-border-sm edit_{{ info.id }}"
+                                  role="status" style="display: none;">
+                                  <span class="sr-only">...loading</span>
+                                </span>
+                                <!-- <a data-dismiss="modal">
+                      Update</a> -->
+                                Update
+                              </button>
+
+                    <a href="{{dirlocation}}admindashboard/listings" class="btn btn-sm btn-info">
+                      
+                       
+
+                      <i class=" mdi mdi-eye-check mr-1 "></i> Views
+                    </a>
+                           
+                            </span>
+                       
+                        
+                        </form>
+                    </div>
+
+                    <!-- test -->
+
+              
+        </div>
+    </div>
+</div>
+</div>
+

@@ -1,0 +1,358 @@
+<div class="content-wrapper" ng-controller="usersController" ng-init="localStorage_get('userInfo')">
+    <div class="page-header">
+        <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white mr-2">
+                <i class="mdi mdi-account-card-details"></i>
+            </span>
+            Profile | {{ userInfo.fullname | uppercase}} <small class="text-muted">({{ userInfo.seller_id}})</small>
+        </h3>
+    </div>
+    
+
+    <div class="row" ng-init="fetch_all_product_of_seller(userInfo.seller_id)">
+        <div class="col-8 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-3">
+                            <!-- <div class="card"> -->
+                            <img src="{{dirlocation}}/public/assets/images/uploads/profile/{{userInfo.image}}"
+                                alt="{{ userInfo.name }}" class="img-thumbnail rounded-circle img-fluid "
+                                style="width:100px; height:100px; " loading="lazy">
+                            <p ng-switch="userInfo.activated" class="mb-0 mt-3">
+                                Activated account:
+                                <span ng-switch-when="1">
+                                    <i class="mdi mdi-shield text-success"></i>
+                                </span>
+                                <span ng-switch-when="0">
+                                    <i class="mdi mdi-shield-outline text-danger"></i>
+                                </span>
+                                <span ng-switch-default>
+                                </span>
+                            </p>
+                            <p ng-switch="userInfo.status" class="mb-0">
+                                Status:
+                                <span ng-switch-when="1">
+                                    <i class="mdi mdi-check-circle text-success"></i>
+                                </span>
+                                <span ng-switch-when="0">
+                                    <i class="mdi mdi-lock text-warning"></i>
+                                </span>
+                                <span ng-switch-default>
+                                </span>
+                            </p>
+                            <!-- </div> -->
+                            <p ng-switch="userInfo.account_type_title" class="mb-0">
+                                Package :
+                                <span ng-switch-when="Free">
+                                    <span class="badge badge-secondary">
+                                        {{userInfo.account_type_title}}
+                                    </span>
+                                </span>
+                                <span ng-switch-when="Basic">
+                                    <span class="badge badge-success">
+                                        {{userInfo.account_type_title}}
+                                    </span>
+                                </span>
+                                <span ng-switch-when="Super">
+                                    <span class="badge badge-info">
+                                        {{userInfo.account_type_title}}
+                                    </span>
+                                </span>
+                                <span ng-switch-when="Advance">
+                                    <span class="badge badge-primary">
+                                        {{userInfo.account_type_title}}
+                                    </span>
+                                </span>
+                                <span ng-switch-default>
+                                    <span class="badge badge-light">
+                                        none
+                                    </span>
+                                </span>
+                            </p>
+                            <p>
+                                Number of Placed ads: <span class="badge badge-primary">{{ rowCount }}</span>
+                            </p>
+                        </div>
+                        <div class="col-sm-6 col-md-9">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <p ng-show="userInfo.fullname">
+                                        Name: <br> <span><i class="mdi mdi-check-circle mr-1 text-success">
+                                            </i>{{ userInfo.fullname }}</span>
+                                    </p>
+                                    <p ng-show="userInfo.email">
+                                        Email: <br> <span><i class="mdi mdi-check-circle mr-1 text-success">
+                                            </i>{{ userInfo.email }}</span>
+                                    </p>
+                                    <p ng-show="userInfo.phone">
+                                        Mobile: <br> <span><i class="mdi mdi-check-circle mr-1 text-success">
+                                            </i>{{ userInfo.phone }}</span>
+                                    </p>
+
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+
+                                    <p ng-show="userInfo.whatsapp">
+                                        Whatsapp: <br> <span><i class="mdi mdi-check-circle mr-1 text-success">
+                                            </i>{{ userInfo.whatsapp }}</span>
+                                    </p>
+
+                                    <p ng-show="userInfo.state">
+                                        <span>State:</span> <br> <span><i
+                                                class="mdi mdi-check-circle mr-1 text-success">
+                                            </i>{{ userInfo.state}}</span>
+                                    </p>
+                                    <p ng-show="userInfo.seller_id">
+                                        Seller ID: <br> <span><i class="mdi mdi-check-circle mr-1 text-success">
+                                            </i>{{ userInfo.seller_id }}</span>
+                                    </p>
+
+
+                                    <p ng-show="userInfo.last_login">
+                                        Last seen: <br> <span><i class="mdi mdi-check-circle mr-1 text-success">
+                                            </i>{{ userInfo.last_login }}</span>
+                                    </p>
+                                    <p ng-show="userInfo.signup_date">
+                                        Signup On: <br> <span><i class="mdi mdi-check-circle mr-1 text-success">
+                                            </i>{{ userInfo.signup_date }}</span>
+                                    </p>
+
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 grid-margin">
+            <div class="card">
+                
+                <div class="card-body">
+                    <aside class="d-flex justify-content-end">
+                        <p class="result text-center" style="display: none"></p>
+                    </aside>
+                    <h4 class="card-title">All ads posted by {{ userInfo.fullname }} </h4>
+                    <div style="text-align: center;" class="loader">
+                        <img src="{{dirlocation}}public/assets/images/spinner4.gif"
+                            style="float:none;margin:0 auto;width:80px">
+                    </div>
+                    <div class="search-field d-none d-md-block mb-5 mt-2">
+                        <form class="d-flex align-items-center h-100" action="#">
+                            <div class="input-group">
+                                <div class="input-group-prepend bg-transparent">
+                                    <i class="input-group-text border-0 mdi mdi-magnify"></i>
+                                </div>
+                                <input type="text" class="form-control bg-transparent border-0"
+                                    placeholder="search user all user ads " ng-model="userAds">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-4 mr-2 mb-5 mr-sm-0"
+                            ng-repeat="ads in all_user_ads | filter: userAds">
+                            <div class="card shadow">
+                                <img ng-init=" img = ads.image.split(',')"
+                                    src="{{dirlocation}}/public/assets/images/uploads/products/{{img[0]}}"
+                                    alt="{{ ads.name }}" class="card-img-top w-100 p-0 rounded" height="150">
+                                <p class="display-4" style="position:absolute;top:0px;left:0;">
+                                    <span ng-switch="ads.status">
+                                        <span ng-switch-when="1">
+                                            <i class="mdi mdi-check-circle text-success"></i>
+                                        </span>
+                                        <span ng-switch-when="0">
+                                            <i class="mdi mdi-close-circle text-danger"></i>
+                                        </span>
+                                        <span ng-switch-default>
+                                        </span>
+                                    </span>
+                                </p>
+                                <small class="text-muted pl-3 mt-1">{{ ads.date_added }}</small>
+                                <div class="card-body p-3">
+                                    <h5 class="card-title">{{ ads.name | limitTo: 20 }}{{ ads.name.length > 20 ? '...' :
+                                        '' }}</h5>
+                                    <small class="text-muted mr-auto" ng-if="ads.brand.length != ''">{{ ads.brand}}</small>
+                                    <small class="text-muted" ng-if="ads.state.length != ''"><i class=" mdi mdi-google-maps text-dark "></i>{{ ads.state }}</small>
+
+                                    <div class="card-text ">
+                                        <p class="text-dark">{{ ads.price | currency : "NGN" }}</p>
+                                        <p class="text-center">
+                                            <button type="button" class="btn btn-sm btn-info m-1"
+                                                ng-click="localStorage_save('adsInfo',ads,'single_listing')">
+                                                <i class="mdi mdi-eye-check mr-2"></i>View
+                                        </button>
+
+
+                                            <span ng-switch="ads.status" class="mr-1" data-toggle="modal"
+                                                data-target=".disable-listing-modal" ng-click="append_modal_info(ads)">
+                                                <span ng-switch-when="1">
+                                                    <button class="btn btn-sm btn-secondary">
+                                                        <span class="spinner-border text-light spinner-border-sm loader_listing_{{ ads.id }} m-1" role="status"  style="display: none;">
+                                                            <span class="sr-only">...loading</span>
+                                                          </span>
+                                                        <i class="mdi mdi-toggle-switch-off icon_listing_{{ ads.id }} mr-1"></i>Hide
+                                                    </button>
+                                                </span>
+                                                <span ng-switch-when="0">
+                                                    <button class="btn btn-sm btn-success">
+                                                        <span class="spinner-border text-light spinner-border-sm loader_listing_{{ ads.id }} m-1" role="status" style="display: none;">
+                                                            <span class="sr-only">...loading</span>
+                                                          </span>
+                                                        <i class="mdi mdi-toggle-switch mr-1 icon_listing_{{ ads.id }}"></i>Show
+                                                    </button>
+                                                </span>
+                                                <span ng-switch-default>
+                                                    none
+                                                </span>
+                                            </span>
+
+                                            <!-- <button href="#" class="btn btn-warning btn-sm mb-1" data-toggle="modal"
+                                                data-target=".disable-listing-modal" ng-click="append_modal_info(ads)">
+                                                <i class="mdi mdi-account-convert mr-1"></i>
+                                                Disable</button> -->
+                                        </p>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <!-- disable user modal -->
+        <!-- <div class="modal fade disable-package-modal" id="exampleModalCenter" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="card">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p class=" text-center display-1 text-warning"><i class="mdi mdi-alert"></i></p>
+                            <p class="display-4 text-center">
+                                You are about to
+                                <span ng-switch="info.status">
+                                    <span ng-switch-when="1">
+                                        <span> disable </span>
+                                    </span>
+                                    <span ng-switch-when="0">
+                                        <span> enable </span>
+                                    </span>
+                                    <span ng-switch-default>
+                                    </span>
+                                </span>
+                                <span class="text-info">
+                                    {{ info.title | uppercase}}
+                                </span>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <span ng-switch="info.status" class="mr-1">
+                                <span ng-switch-when="1">
+                                    <button ng-click="toggle_package_status(0,info)" class="btn btn-warning btn-sm"
+                                        data-dismiss="modal">
+                                        Disable
+                                    </button>
+                                </span>
+                                <span ng-switch-when="0">
+                                    <button ng-click="toggle_package_status(1,info)" class="btn btn-success btn-sm"
+                                        data-dismiss="modal">
+                                        Enable
+                                    </button>
+                                </span>
+                                <span ng-switch-default>
+                                    none
+                                </span>
+                            </span>
+
+                            <button type="button" class="btn btn-light btn-sm " data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+        <!-- end disable user modal -->
+
+
+        <!-- disable listing modal -->
+        <div class="modal fade disable-listing-modal" id="exampleModalCenter" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="card">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p class=" text-center display-1 text-warning"><i class="mdi mdi-alert"></i></p>
+                            <p class="display-4 text-center">
+                                You are about to
+                                <span ng-switch="info.status">
+                                    <span ng-switch-when="1">
+                                        <span> hide </span>
+                                    </span>
+                                    <span ng-switch-when="0">
+                                        <span> show </span>
+                                    </span>
+                                    <span ng-switch-default>
+                                    </span>
+                                </span>
+                                <span class="text-info">
+                                    {{ info.name | uppercase}}
+                                </span>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+
+                            <!-- call disable_enable() -->
+                            <view ng-controller="listingController">
+                                <span ng-switch="info.status" class="mr-1">
+                                    <span ng-switch-when="1">
+                                        <button ng-click="enable_or_disable_listing(0,info, $index)"
+                                            class="btn btn-secondary btn-sm" data-dismiss="modal">
+                                            <span class="spinner-border text-light spinner-border-sm loader_listing_{{ info.id }}" role="status" style="display: none;">
+                                                <span class="sr-only">...loading</span>
+                                              </span>
+                                            Hide
+                                        </button>
+                                    </span>
+                                    <span ng-switch-when="0">
+                                        <button ng-click="enable_or_disable_listing(1,info, $index)"
+                                            class="btn btn-success btn-sm" data-dismiss="modal">
+                                            <span class="spinner-border text-light spinner-border-sm loader_listing_{{ info.id }}" role="status" style="display: none;">
+                                                <span class="sr-only">...loading</span>
+                                              </span>
+                                            Show
+                                        </button>
+                                    </span>
+                                    <span ng-switch-default>
+                                        none
+                                    </span>
+                                </span>
+                            </view>
+
+                            <button type="button" class="btn btn-light btn-sm " data-dismiss="modal"><i
+                                    class="mdi mdi-cancel mr-1"></i>Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end disable listing modal -->
+    </div>
+
+
+</div>

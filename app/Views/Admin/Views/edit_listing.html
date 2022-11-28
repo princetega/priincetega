@@ -1,0 +1,106 @@
+<div class="content-wrapper" ng-controller="usersController" ng-init="localStorage_get('adsInfo')">
+    <div class="page-header">
+        <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white mr-2">
+                <i class="mdi mdi-presentation-play"></i>
+            </span>
+            Edit | {{ adsInfo.title | uppercase }} <small class="text-muted">({{ adsInfo.product_code }})</small>
+            by <span class="text-info"> {{ adsInfo.fullname }}</span>
+
+        </h3>
+    </div>
+    <div class="row" ng-init="fetch_all_blogs_of_admin(adsInfo.admin_id)">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body bg-light">
+                    <div class="row">
+                        <div class="col-12">
+                        
+                      <div class="card p-3">
+                             <div ng-if="adsInfo.image.length > 0">
+                        <img src="{{dirlocation}}/public/assets/images/uploads/blogs/{{adsInfo.image}}"
+                          alt="{{ info.title }}" loading="lazy" class=" d-block w-25 mx-auto" />
+                      </div>
+                        <aside class="d-flex justify-content-center">
+                          <p class="alert alert-info result-c text-center" style="display: none"></p>
+                        </aside>
+                             <form id="updateBlog" ng-submit="update_blogs(adsInfo.id)">
+                          <div class="row">
+                            <div class="col-12">
+                              <div class="form-group mt-2">
+                                <label for="files[]">Replace Icon </label>
+                                <input type="file" name="files[]" multiple class="form-control file-upload-info"
+                                  placeholder="replace category icon">
+                                <sup class="text-danger">*Only jpg and png are supported*</sup>
+                              </div>
+                              <div class="form-group">
+                                <label for="title"> Blog Title</label>
+                                <input type="text" class="form-control" name="title" id="title"
+                                  placeholder="category update name" value="{{ adsInfo.title }}" required />
+                                <input type="hidden" name="id" id="id"  value="{{ adsInfo.id }}" required />
+
+                                
+                              </div>
+                              <div ng-controller="categoryController" class="form-group " ng-init="get_all_cat_and_sub_cat()" >
+                  <label for=" category">Parent Category</label>
+                  <select   class="form-control" multiple="" name="category[]" id="category[]" >
+                    <option value="">SELECT PARENT CATEGORY{{cates}}</option>
+                    <option selected="" value="{{adsInfo.category}}">{{adsInfo.category}}</option>
+                    <option ng-repeat=" cat in all_cat_and_sub  " value="{{ cat.title }}">{{ cat.title }}</option>
+                  </select>
+                </div>
+                 <div class="form-group">
+                  <label for="title">Short Descripton</label>
+                  <textarea class="form-control" required  name="short_description"rows="4" placeholder="Short Description"
+                  >{{adsInfo.short_description}}</textarea>
+                </div>
+                 <div class="form-group">
+                  <label for="title">Long Descripton</label>
+                  <textarea ui-tinymce="tinymceOptions" ng-model="adsInfo.long_description" class="text1 form-control" required name="long_description"rows="4" placeholder="Long Description"
+                  >{{adsInfo.long_description}}</textarea>
+                </div>
+                 <input type="hidden" name="id" id="id" value="{{adsInfo.id}}">
+                  <input type="hidden" name="product_code" id="product_code" value="{{adsInfo.product_code}}">
+                   <input type="hidden" name="admin_id" id="admin_id" value="{{admin_data.email}}">
+                   <input type="hidden" id="p_i" name="p_i" value="{{adinfo.image}}">
+                   <div ng-if="info.image.length > 0">
+                                    
+                                  <input type="hidden" name="previous_image"  id="previous_image"
+                                    value="{{ adsInfo.image }}" required />
+                                </div>
+                            </div>
+                          </div>
+                          
+                            <span>
+
+                              <button type="submit" class="btn btn-info btn-sm">
+                                <span class="spinner-border text-light spinner-border-sm edit_{{ info.id }}"
+                                  role="status" style="display: none;">
+                                  <span class="sr-only">...loading</span>
+                                </span>
+                                <!-- <a data-dismiss="modal">
+                      Update</a> -->
+                                Update
+                              </button>
+
+                    <a href="{{dirlocation}}admindashboard/listings" class="btn btn-sm btn-info">
+                      
+                       
+
+                      <i class=" mdi mdi-eye-check mr-1 "></i> Views
+                    </a>
+                           
+                            </span>
+                       
+                        
+                        </form>
+                    </div>
+
+                    <!-- test -->
+
+              
+        </div>
+    </div>
+</div>
+</div>
+

@@ -1,0 +1,83 @@
+<!--========== PARALLAX ==========-->
+        <div data-parallax="scroll" class="parallax">
+            <div class="parallax-content container">
+                <h1 class="carousel-title">Start a project</h1>
+                
+
+            </div>
+        </div>
+        <!--========== PARALLAX ==========-->
+
+           <!-- About -->
+        <div class="bg-color-sky-light">
+        <div class="content-lg container ">
+           
+
+            <div class="row">
+                <div class="col-sm-4 sm-margin-b-50 bg-color-sky-light">
+                    <div class="margin-b-30">
+                         <h2 class="">Tell us About Your Project</h2>
+                        <p>Have an idea and looking for a team of committed creative and friendly individuals to turn it into reality? Let’s hear the scope, timeframes, or business challenges you’d like to solve. Our team will carefully study them and then we’ll figure out the next move together.</p>
+                    </div>
+                     <div class="margin-b-30">
+                         <h2 class="">You are in good hands</h2>
+                         <div class="margin-b-30">
+                           <img class="img-responsive" src="{{dirlocation}}public/assets/img/970x970/01.jpg" alt="Content Image">  
+                         </div>
+                          
+                         <a href="pricing.html" class="btn-theme btn-theme-sm btn-base-bg text-uppercase">Choose</a>
+                        
+                    </div>
+                
+                </div>
+                <div class="col-sm-7 col-sm-offset-1 margin-b-30 bg-color-white">
+                    
+                           <form style="margin: 20px 0" id="send_project" ng-submit="send_project()">
+                             <div class="alert alert-info result" style="display: none;"></div>
+                            <div class="row">
+                                <div class="col-sm-6"><input type="text" name="sender_name" class="form-control footer-input margin-b-20" placeholder="Name" required></div>
+                                 <div class="col-sm-6"><input type="email" name="sender_email" class="form-control footer-input margin-b-20" placeholder="Email" required></div>
+                            </div>
+                             <div class="row">
+                                <div class="col-sm-6"><input type="text" name="sender_contact" class="form-control footer-input margin-b-20" placeholder="Phone Number" required></div>
+                                 <div class="col-sm-6"><input type="text" name="company_name" class="form-control footer-input margin-b-20" placeholder="Company name (if any)" ></div>
+                            </div>
+                            <p>What service are you interesting in?</p>
+                             <input type="checkbox" name="sender_services[]" class=" margin-b-20" placeholder="Name" value="Web Design">  Web Design
+                            <input type="checkbox" name="sender_services[]" class=" margin-b-20" placeholder="Name" value="Web App">  Web App
+                            <input type="checkbox" name="sender_services[]" class=" margin-b-20" placeholder="Name" value="Mobile App">  Mobile App
+                            <input type="checkbox" name="sender_services[]" class=" margin-b-20" placeholder="Name" value="Strategy">  Strategy
+                           <input type="checkbox" name="sender_services[]" class=" margin-b-20" placeholder="Name" value="Hosting">  Hosting
+                            <input type="checkbox" name="sender_services[]" class=" margin-b-20" placeholder="Name" value="Ecommerce">  Ecommerce
+                           <input type="checkbox" name="sender_services[]" class=" margin-b-20" placeholder="Name" value="Consultancy">  Consultancy
+                           <textarea class="form-control footer-input margin-b-30" name="description" rows="6" placeholder="Project Description" required></textarea>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>What is your Timeframe</label>
+                                    <select class="form-control " name="timeframe">
+                                        <option value="<2 months"><2 months</option>
+                                             <option value="2-4 months">2-4 months</option>
+                                                 <option value="4 months +">4 months +</option>
+                                    </select>
+                                </div>
+                                   
+                                 <div class="col-sm-6">
+                                      <label>What is your budget?</label>
+                                    <input type="number" name="budget" class="form-control  margin-b-20" placeholder="NGN 1,000,000" required></div>
+                            </div>
+                             <div class="row">
+                                <div class="col-sm-6">
+                                    <input type="text" name="referral" class="form-control footer-input margin-b-20" placeholder="How did you hear about us?(Google, Referral e.t.c)"></div>
+                                 
+                            </div>
+                        
+                            
+                            
+                            <button type="submit" class="btn-theme btn-theme-sm btn-base-bg text-uppercase">Submit</button>
+                       </form>
+                </div>
+            </div>
+            <!--// end row -->
+        </div>
+        <!-- End About -->
+    </div>

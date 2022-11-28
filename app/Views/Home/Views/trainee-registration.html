@@ -1,0 +1,65 @@
+<!--========== PARALLAX ==========-->
+        <div ng-init="fetch_single_training()"  data-parallax="scroll" class="parallax">
+            <div class="parallax-content container">
+                <h1 class="carousel-title">{{singleTraining.title}}</h1>
+                
+
+            </div>
+        </div>
+        <!--========== PARALLAX ==========-->
+
+           <!-- About -->
+        <div class="bg-color-sky-light">
+        <div class="content-lg container ">
+           
+
+            <div class="row">
+                <div class="col-sm-6 sm-margin-b-50 bg-color-sky-light">
+                <div ng-bind-html="singleTraining.details"></div>
+                
+                </div>
+                <div class="col-sm-5 col-sm-offset-1 margin-b-30 bg-color-white" >
+                    
+                           <form style="margin: 20px 0" id="register_trainee" ng-submit="register_trainee()">
+                            <div class="alert alert-info result" style="display: none;"></div>
+                            <div class="row">
+                                <div class="col-sm-6"><input type="text" name="trainee_name" class="form-control footer-input margin-b-20" placeholder="Full Name" required></div>
+                                 <div class="col-sm-6"><input type="email" name="trainee_email" class="form-control footer-input margin-b-20" placeholder="Email" required></div>
+                            </div>
+                             <div class="row">
+                                <div class="col-sm-6"><input type="text" name="trainee_contact" class="form-control footer-input margin-b-20" placeholder="Phone Number" required></div>
+                                 <div class="col-sm-6"><input type="text" value="{{singleTraining.title}}" name="course" class="form-control footer-input margin-b-20" placeholder="Company name (if any)" ></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>What is your highest level of education completed</label>
+                                    <select class="form-control " name="education">
+                                        <option value="Highschoola">Highschool</option>
+                                             <option value="Diploma">Diploma</option>
+                                                 <option value="Bachelors Degree">Bachelors Degree</option>
+                                                 <option value="Master Degree">Master Degree</option>
+                                                 <option value="Other Certificate Programs (Non-Degree)">Other Certificate Programs (Non-Degree)</option>
+                                                 <option value="Doctorate">Doctorate</option>
+                                    </select>
+                                </div>
+                                   
+                               <div class="col-sm-6">
+                                    <input type="text" name="referral" class="form-control footer-input margin-b-20" placeholder="How did you hear about us?(Google, Referral e.t.c)"></div>
+                            </div>
+                           
+                        
+                            
+                            
+                            <button type="submit" class="btn-theme btn-theme-sm btn-base-bg text-uppercase">  <span class="spinner-border text-light spinner-border-sm" role="status" id="loader"
+                style="display: none;">
+                <span class="sr-only">...loading</span>
+              </span>Register</button>
+                            <p>Someone else is registering this course now..</p>
+                            <p>Maximum of 10 Persons</p>
+                       </form>
+                </div>
+            </div>
+            <!--// end row -->
+        </div>
+        <!-- End About -->
+    </div>

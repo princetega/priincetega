@@ -1,0 +1,156 @@
+ <!--========== PARALLAX ==========-->
+ 
+
+        <div class="parallaxss" style="background: url({{dirlocation}}public/assets/img/strategy/landing-image.jpg) no-repeat; background-size: cover;
+  background-position: top top;
+   min-height: 600px;
+   background-attachment: fixed;" data-parallax="scroll" >
+            <div class="parallax-contents container" id="ds">
+                <h4 class="carousel-titles">Recent projects </h4>
+                <p class="margin-b-20 color-white">We have worked on interesting web & mobile app projects with amazing clients. Based on our vast experience in web and mobile development, we help businesses and individuals push their ideas and business to the next level leveraging on proven technologies.</p>
+                    
+                           
+                       
+            </div>
+        </div>
+        <!--========== PARALLAX ==========-->
+ 
+
+           <!-- Features -->
+        <div class=" ">
+            <div class="content-lg container">
+           
+                <div class="row margin-b-50">
+                        <div class="col-sm-12 sm-margin-b-50" ng-init="fetch_all_project()">
+                    <div class="row margin-b-20">
+                        <div class="col-sm-6" ng-repeat="project in all_projects"> <div class="work wow fadeInUp" data-wow-duration=".3" data-wow-delay=".5s">
+                            <div class="work-overlay">
+                                <img width="818" height="900" title="Web and Mobile app development, web design, mobile developer" class="full-width img-responsive" alt="Web and Mobile app development, web design, mobile developer" src="{{dirlocation}}public/assets/images/uploads/projects/{{project.image}}"   srcset="{{dirlocation}}public/assets/images/uploads/projects/{{project.image}} 818w, {{dirlocation}}public/assets/images/uploads/projects/{{project.image}} 273w, {{dirlocation}}public/assets/images/uploads/projects/{{project.image}} 768w" sizes="(max-width: 800px) 100vw, 800px" width="800" height="880">
+                               
+                               
+                            </div>
+                            <div class="work-content">
+                                <p class="color-white margin-b-5">{{project.title}}</p>
+                                
+                            </div>
+                            <a class="content-wrapper-link" href="{{dirlocation}}home/project-detail:{{project.id}}">Read More</a>
+                        </div></div>
+                        
+                    </div>
+                     
+                </div>
+       
+                
+            </div>
+        </div>
+        <!-- End Features -->
+             <!-- Clients -->
+        <div class="bg-color-sky-light">
+            <div class="content-lg container">
+                <div class="row margin-b-50">
+                    <div class="col-sm-4">
+                        <h4>INDUSTRY EXPERIENCE</h4>
+                    </div>
+                    <div class="col-sm-8">
+                        <h2 class="margin-b-20">Industry <span style="color: #63cbd7;">Focus</span></h2>
+                        <p>With over 100 successful projects, our team has accumulated expert level experience in the following industry verticals. Across each of these industries, we have helped brands launch, expand, and pivoted themselves.</p>
+                    </div>
+                </div>
+                <div class="row margin-b-50">
+                            <div class="col-sm-4 margin-b-20">
+                        <div class="wow fadeInLeft" data-wow-duration=".3" data-wow-delay=".1s">
+                            <div class="works" data-height="height" style="text-align: center;">
+                               <h5 class="color-white" style="padding: 30px 10px; font-size: 24px" >Travel & Logistics</h5>    
+                            </div>
+                        </div>
+                    </div>
+                       <div class="col-sm-4 margin-b-20">
+                        <div class="wow fadeInLeft" data-wow-duration=".3" data-wow-delay=".1s">
+                            <div class="works" data-height="height" style="text-align: center;">
+                               <h5 class="color-white" style="padding: 30px 10px; font-size: 24px" >Lifestyle</h5>    
+                            </div>
+                        </div>
+                    </div>
+                        <div class="col-sm-4 margin-b-20">
+                        <div class="wow fadeInLeft" data-wow-duration=".3" data-wow-delay=".1s">
+                            <div class="works" data-height="height" style="text-align: center;">
+                               <h5 class="color-white" style="padding: 30px 10px; font-size: 24px" >Power & Utility</h5>    
+                            </div>
+                        </div>
+                    </div>
+                        <div class="col-sm-4 margin-b-20">
+                        <div class="wow fadeInLeft" data-wow-duration=".3" data-wow-delay=".1s">
+                            <div class="works" data-height="height" style="text-align: center;">
+                               <h5 class="color-white" style="padding: 30px 10px; font-size: 24px" >Education</h5>    
+                            </div>
+                        </div>
+                    </div>
+                        <div class="col-sm-4 margin-b-20">
+                        <div class="wow fadeInLeft" data-wow-duration=".3" data-wow-delay=".1s">
+                            <div class="works" data-height="height" style="text-align: center;">
+                               <h5 class="color-white" style="padding: 30px 10px; font-size: 24px" >Food & Beverage</h5>    
+                            </div>
+                        </div>
+                    </div>
+                        <div class="col-sm-4 margin-b-20">
+                        <div class="wow fadeInLeft" data-wow-duration=".3" data-wow-delay=".1s">
+                            <div class="works" data-height="height" style="text-align: center;">
+                               <h5 class="color-white" style="padding: 30px 10px; font-size: 24px" >Real Estate</h5>    
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+          
+                <div class="row" style="margin: 150px 0px">
+                    <div class="col-sm-4">
+                        <h4>FEATURED CLIENTS</h4>
+                    </div>
+                    <div class="col-sm-8">
+                        <h2 class="margin-b-20">Amazing <span style="color: #63cbd7;">Clients</span></h2>
+                        <p>Our mission is to solve business problems, increase visibility, and achieve exponential results for clients. We bring unique and engaging experiences to life by direct collaboration with our clients</p>
+                    </div>
+                </div>
+                <!-- Swiper Clients -->
+                <div class="swiper-slider swiper-clients">
+                    <!-- Swiper Wrapper -->
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <img class="swiper-clients-img" src="{{dirlocation}}public/assets/img/clients/01.png" alt="Clients Logo">
+                        </div>
+                        <div class="swiper-slide">
+                            <img class="swiper-clients-img" src="{{dirlocation}}public/assets/img/clients/02.png" alt="Clients Logo">
+                        </div>
+                        <div class="swiper-slide">
+                            <img class="swiper-clients-img" src="{{dirlocation}}public/assets/img/clients/03.png" alt="Clients Logo">
+                        </div>
+                        <div class="swiper-slide">
+                            <img class="swiper-clients-img" src="{{dirlocation}}public/assets/img/clients/04.png" alt="Clients Logo">
+                        </div>
+                        <div class="swiper-slide">
+                            <img class="swiper-clients-img" src="{{dirlocation}}public/assets/img/clients/05.png" alt="Clients Logo">
+                        </div>
+                        <div class="swiper-slide">
+                            <img class="swiper-clients-img" src="{{dirlocation}}public/assets/img/clients/06.png" alt="Clients Logo">
+                        </div>
+                    </div>
+                    <!-- End Swiper Wrapper -->
+                </div>
+                <!-- End Swiper Clients -->
+            </div>
+        </div>
+        <!-- End Clients -->
+               <div class="" style="background-color: #63cbd7;  ">
+            <div class="content-lg container">
+                <!-- Swiper Clients -->
+                <div class="swiper-slider swiper-clients" >
+                    <h2 style="text-align: center; font-size: 24px; color: white">Have an idea? Let’s help transform your next big idea. We’d love to hear from you</h2>
+                    <div style="text-align: center;">
+                        <a style="padding-right: 20px;  background: white" href="#" class="btn-theme btn-theme-sm   text-uppercase">Start a project</a>
+                        <a  href="#" class="btn-theme btn-theme-sm btn-base-bg text-uppercase">Let's talk</a>
+                    </div>
+                </div>
+                <!-- End Swiper Clients -->
+            </div>
+        </div>
+   

@@ -1,0 +1,260 @@
+<div class="content-wrapper">
+  <div class="page-header">
+    <h3 class="page-title">
+      <span class="page-title-icon bg-gradient-primary text-white mr-2">
+        <i class="mdi mdi-account-multiple"></i>
+      </span>
+      Clients/Users
+    </h3>
+  </div>
+  <aside class="d-flex justify-content-end">
+    <p class="result text-center" style="display: none"></p>
+  </aside>
+  <div class="d-flex justify-content-center align-items-center mb-2">
+    <div class="spinner-border text-info spinner-border-sm" role="status" id="user_loader" style="display: none;">
+      <span class="sr-only">...loading</span>
+    </div>
+  </div>
+  <div class="row" ng-init="get_all_users()">
+
+    <div class="col-12 grid-margin">
+
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">All Users</h4>
+          <div class="search-field d-none d-md-block my-3">
+            <form class="d-flex align-items-center h-100">
+              <div class="input-group">
+                <div class="input-group-prepend bg-transparent">
+                  <i class="input-group-text border-0 mdi mdi-account-search"></i>
+                </div>
+                <input type="text" class="form-control bg-transparent border-0" placeholder="search for users "
+                  ng-model="userSearch">
+              </div>
+            </form>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Full Name</th>
+                  <!-- <th>Email/Phone</th> -->
+                  <th>Seller ID</th>
+                  <th>Account Type</th>
+                  <th>Last Login</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr dir-paginate="user in all_users | filter:userSearch | itemsPerPage: pageSize"
+                  current-page="currentPage" ng-cloak>
+                  <td>{{($index +1) + (currentPage-1) * pageSize}}</td>
+                  <td>
+                    <img src="{{dirlocation}}/public/assets/images/uploads/profile/{{user.image}}" class="mr-2"
+                      loading="lazy" alt="{{ user.fullname }}" />
+                    <span>
+                      {{user.fullname}}
+                    </span>
+
+                    <span ng-switch="user.activated">
+                      <span ng-switch-when="1">
+                        <i class="mdi mdi-shield text-success"></i>
+                      </span>
+                      <span ng-switch-when="0">
+                        <i class="mdi mdi-shield-outline text-danger"></i>
+                      </span>
+                      <span ng-switch-default>
+                      </span>
+                    </span>
+                    <span ng-switch="user.status">
+                      <span ng-switch-when="1">
+                        <i class="mdi mdi-check-circle text-success"></i>
+                      </span>
+                      <span ng-switch-when="0">
+                        <i class="mdi mdi-close-circle text-secondary"></i>
+                      </span>
+                      <span ng-switch-default>
+                      </span>
+                    </span>
+                  </td>
+                  <!-- <td>
+                    {{user.email}}<br /><span class="text-muted" style="font-size: 12px">{{user.phone}}</span><br />
+                    <span class="text-muted" style="font-size: 12px">{{user.whatsapp}}</span>
+                  </td> -->
+                  <td>{{user.seller_id}}</td>
+                  <td ng-switch="user.seller_account_packages_id">
+                    <span ng-switch-when="1">
+                      <span class="badge badge-secondary">
+                        {{user.account_type_title}}
+                      </span>
+                    </span>
+                    <span ng-switch-when="2">
+                      <span class="badge badge-success">
+                        {{user.account_type_title}}
+                      </span>
+                    </span>
+                    <span ng-switch-when="3">
+                      <span class="badge badge-info">
+                        {{user.account_type_title}}
+                      </span>
+                    </span>
+                    <span ng-switch-when="4">
+                      <span class="badge badge-primary">
+                        {{user.account_type_title}}
+                      </span>
+                    </span>
+                    <span ng-switch-default>
+
+                    </span>
+                  </td>
+                  <td>{{user.last_login}}</td>
+                  <td>
+                    <!-- toggle enable account buttons -->
+                    <span ng-switch="user.status" class="mr-1" data-toggle="modal" data-target=".disable-modal"
+                      ng-click="append_modal_info(user)">
+                      <span ng-switch-when="1">
+                        <button class="btn btn-sm btn-secondary">
+                          <span class="spinner-border text-light spinner-border-sm user_loader_{{ user.id }}" role="status" style="display: none;">
+                            <span class="sr-only">...loading</span>
+                          </span>
+                          <i class="mdi mdi-toggle-switch-off mr-1  icon_{{ user.id }}"></i> Hide
+                        </button>
+                      </span>
+                      <span ng-switch-when="0">
+                        <button class="btn btn-sm btn-success ">
+                          <span class="spinner-border text-light spinner-border-sm user_loader_{{ user.id }}" role="status" style="display: none;">
+                            <span class="sr-only">...loading</span>
+                          </span>
+                          <i class="mdi mdi-toggle-switch mr-1 icon_{{ user.id }}"></i> Show
+                        </button>
+                      </span>
+                      <span ng-switch-default>
+                        none
+                      </span>
+                    </span>
+
+                    <!-- view user profile details -->
+                    <button href="#" class="btn btn-sm btn-info"
+                      ng-click="localStorage_save('userInfo',user,'profile')" style="cursor: pointer;">
+                      <i class=" mdi mdi-eye-check mr-1"></i> View
+                    </button>
+
+                    <!-- delete user account control -->
+                    <view ng-if="admin_data.privilege == ultra" ng-controller="adminController">
+
+                      <button class="btn btn-sm btn-danger" data-toggle="modal" data-target=".delete-user-modal"
+                        ng-click="append_modal_info(user)">
+                        <i class="mdi mdi-delete-forever mr-1"></i> Delete
+                      </button>
+                    </view>
+                  </td>
+                </tr>
+              </tbody>
+              <!-- disable user modal -->
+              <div class="modal fade disable-modal" id="exampleModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="card">
+
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p class=" text-center display-1 text-warning"><i class="mdi mdi-alert"></i></p>
+                        <p class="display-4 text-center">
+                          You are about to
+                          <span ng-switch="info.status">
+                            <span ng-switch-when="1">
+                              <span> hide </span>
+                            </span>
+                            <span ng-switch-when="0">
+                              <span> show </span>
+                            </span>
+                            <span ng-switch-default>
+                            </span>
+                          </span>
+                          <span class="text-info">
+                            {{ info.fullname | uppercase}}
+                          </span>
+                        </p>
+                      </div>
+                      <div class="modal-footer">
+
+                        <!-- call disable_enable() -->
+                        <span ng-switch="info.status" class="mr-1">
+                          <span ng-switch-when="1">
+                            <button ng-click="enable_or_disable(0,info)" class="btn btn-secondary btn-sm"
+                              data-dismiss="modal">
+                              Hide
+                            </button>
+                          </span>
+                          <span ng-switch-when="0">
+                            <button ng-click="enable_or_disable(1,info)" class="btn btn-success btn-sm"
+                              data-dismiss="modal">
+                              Show
+                            </button>
+                          </span>
+                          <span ng-switch-default>
+                            none
+                          </span>
+                        </span>
+
+                        <button type="button" class="btn btn-light btn-sm " data-dismiss="modal"><i
+                            class="mdi mdi-cancel mr-1"></i>Cancel</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end disable user modal -->
+
+              <!-- delete user modal -->
+              <div class="modal fade delete-user-modal" id="exampleModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="card">
+
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p class=" text-center display-1 text-danger"><i class="mdi mdi-delete"></i></p>
+                        <p class="display-4 text-center">
+                          You are about to DETETE
+                          <span class="text-danger">
+                            {{ info.fullname | uppercase}}
+                          </span>
+                          and associated ADS FOREVER !
+                        </p>
+                      </div>
+                      <div class="modal-footer">
+
+                        <!-- call delete function() -->
+                        <button ng-click="delete_user_account_and_ads(info.seller_id)" class="btn btn-danger btn-sm"
+                          data-dismiss="modal">
+                          Delete account !
+                        </button>
+                        <button type="button" class="btn btn-light btn-sm " data-dismiss="modal"><i
+                            class="mdi mdi-cancel mr-1"></i>Cancel</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end delete modal -->
+            </table>
+            <dir-pagination-controls boundary-links="true" template-url="" style="float: right">
+            </dir-pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

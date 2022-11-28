@@ -1,0 +1,43 @@
+<div class="main-content container-fluid">
+  <section class="section">
+    <div class="col-12 mt-3 mb-1">
+      <h4 class="section-title text-uppercase">My Profile</h4>
+      <p class="text-subtitle text-muted">A good dashboard to display your statistics</p>
+  </div>
+
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="card">
+                <div class="card-body text-white" style="text-align: center;">
+                    <img src="{{dirlocation}}/public/assets/images/uploads/profile/{{user_data.image}}" width="100px" height="100px"  onclick="$('#photo_append').click()" class="profile_thumbnail img-profile rounded-circle mb-4">
+                    <h4 style="color:#000">{{user_data.fullname}}</h4>
+                    <span style="color:rgb(94, 67, 67);font-size: 12px;">Click to browse file and change profile image</span><br/>
+                    <form method="post" ng-submit="upload_profile_img()" id="upload_profile_img">
+                    <button type="submit" class="btn btn-success btn-sm upload_profile_btn" style="display:none">
+                      <img ng-src="{{dirlocation}}public/images/spinner.gif" class="image_upload_loader" style="display:none;height:25px">
+                      Upload</button>
+                      <input type="file" accept="image/jpeg, image/png" id="photo_append" name="files[]" onchange="angular.element(this).scope().attach_image(this)" style="display:none">
+                    </form>
+                     </div>
+
+                     
+                      <div class="card-body">
+                        <p class="mb-4">Seller Id : <span>{{user_data.seller_id}}</span></p>
+                        <p class="mb-4">Account Type : <span class="badge bg-secondary">{{user_data.seller_account_details.title}}</span> <a href="{{dirlocation}}dashboard/account_packages">Change</a></p>
+                        <p class="mb-4">Email : <span>{{user_data.email}}</span></p>
+                         <p class="mb-4">Phone Number : <span>{{user_data.phone}}</span></p>
+                          <p class="mb-4">Whatsapp : <span>{{user_data.whatsapp}}</span></p>
+                           <p class="mb-4">Last Seen : <span>{{user_data.last_login}}</span></p>
+                      </div>
+                      <input type="file" accept="image/jpeg, image/png" id="photo_append" name="profile_image" onchange="angular.element(this).scope().attach_image(this)" style="display:none">
+                      <div class="col-lg-12" style="text-align: center;margin-bottom:10px">
+                      <a href="{{dirlocation}}dashboard/edit_profile" class="btn btn-primary" style="margin-bottom:20px">Edit Profile</a><br/>
+                      <a href="{{dirlocation}}dashboard/update_password" style="margin-top:20px">Update Password</a>
+                    </div>
+                      
+              </div>
+            </div>
+            
+          </div>
+      </section>
+</div>

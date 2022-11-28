@@ -1,0 +1,46 @@
+ <!--========== PARALLAX ==========-->
+ <div >
+         <div ng-init="fetch_single_project()"  data-parallax="scroll" class="parallax">
+            <div class="parallax-content container" style="text-align: center;">
+                <p>prototype | mobile app | web app | website design</p>
+                <h2  class="carousel-title">{{singleProject.title}}</h2>
+                
+
+            </div>
+        </div>
+        <!--========== PARALLAX ==========-->
+
+        <!--========== PAGE LAYOUT ==========-->
+        <!-- Features -->
+        <div class="">
+            <div class="content-lg container">
+                <div class="row margin-b-50" >
+                    <div  class="margin-b-50 col-sm-10     " >
+                    
+                                 <img class="full-width img-responsive project-container"  width="800" height="460" title="Web and Mobile app development, web design, mobile developer"  src="{{dirlocation}}public/assets/images/uploads/projects/{{singleProject.image}}">
+                    
+                    </div>
+                    
+                </div>
+               <div ng-bind-html="singleProject.details"></div>
+            </div>
+        
+        </div>
+        <!-- End Features -->
+
+    </div>
+       <div class="" style="background-color: #63cbd7;  ">
+            <div class="content-lg container">
+                <!-- Swiper Clients -->
+                <div class="swiper-slider swiper-clients" >
+                    <h2 style="text-align: center; font-size: 24px; color: white">Have an idea? Let’s help transform your next big idea. We’d love to hear from you</h2>
+                    <div style="text-align: center;">
+                        <a style="padding-right: 20px;  background: white" href="#" class="btn-theme btn-theme-sm   text-uppercase">Start a project</a>
+                        <a  href="#" class="btn-theme btn-theme-sm btn-base-bg text-uppercase">Let's talk</a>
+                    </div>
+                </div>
+                <!-- End Swiper Clients -->
+            </div>
+        </div>
+
+        

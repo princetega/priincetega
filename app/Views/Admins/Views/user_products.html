@@ -1,0 +1,53 @@
+<div class="main-content container-fluid">
+  <section id="groups" ng-init="fetch_all_product_of_seller()">
+    <div class="row match-height">
+      <div class="col-12 mt-3 mb-1">
+        <h4 class="section-title text-uppercase">My Products</h4>
+        <p class="text-subtitle text-muted">A good dashboard to display your statistics</p>
+      </div>
+    </div>
+    <div style="text-align: center;" class="loader">
+      <img src="{{dirlocation}}public/assets/images/spinner4.gif" style="float:none;margin:0 auto;width:80px">
+    </div>
+    <div class="row" ng-if="products.length==0">
+      <div class="mt-5" style="text-align: center;">
+        <p>You have not uploaded any ads yet</p>
+        <a href="{{dirlocation}}dashboard/add_product" class="btn btn-primary btn-rounded">Add Product</a>
+      </div>
+    </div>
+
+    <div class="row" ng-if="products.length!=0">
+      <div class="col-xl-4 col-md-6 col-sm-12" ng-repeat="sellerProduct in products">
+        <div class="card">
+          <div class="card-content">
+            <div class="card-body">
+              <h4 class="card-title">{{ sellerProduct.name | limitTo: 50 }}{{sellerProduct.name.length > 50 ? '...' :
+                ''}}</h4>
+              <p class="card-text">
+                <span class="text-secondary" style="font-size: 13px; margin-top:-20px;"> {{sellerProduct.price |
+                  currency:'NGN '}} <br /><span
+                    style="font-size: 10px; color:#ccc">{{sellerProduct.date_added}}</span></span>
+              </p>
+            </div>
+            <div style="height:150px;overflow:hidden">
+              <img class="img-fluid" ng-init="img = sellerProduct.image.split(',')"
+                src="{{dirlocation}}public/assets/images/uploads/products/{{img[0]}}">
+            </div>
+          </div>
+          <div class="card-footer" style="text-align: right">
+            <span>See Details</span>
+            <button class="btn btn-danger btn-sm" ng-click="delete_product(sellerProduct,$index)"><i
+                class="fa fa-times"></i></button>
+            <button class="btn btn-info btn-sm" 
+              ng-click="localStorage_save('productDetails',sellerProduct,'edit_product')">
+              <i class="fa fa-edit"></i></button>
+            
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+</div>

@@ -1,0 +1,79 @@
+<main class="main" ng-controller="homeController">
+			<nav aria-label="breadcrumb" class="breadcrumb-nav">
+				<div class="container">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
+						<li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+					</ol>
+				</div><!-- End .container -->
+			</nav>
+
+			<div class="container">
+				<div class="row">
+					<?php require_once '../app/views/inc/aside1.php';?>
+					<div class="col-lg-9 order-lg-last dashboard-content">
+					
+
+						<h3>Add Hero</h3>
+
+						<div class="result"></div>
+						<div class="card">
+							<div class="card-header">
+								Hero
+								<a href="#" class="card-edit">Edit</a>
+							</div><!-- End .card-header -->
+
+							<div class="card-body">
+							 <form ng-submit="AddHero()" id="AddHero"  method="POST" action="">  
+							 	<div class="result"></div>
+        <input
+          type="text"
+          name="title"
+          id="title"
+          class="form-control"
+          require
+          placeholder="Title"
+          
+      
+        />
+            <input
+          type="text"
+          name="sub_title"
+          id="sub_title"
+          class="form-control"
+          require
+          placeholder="Sub Title"
+          
+      
+        />
+           <input
+          type="file"
+          name="file"
+          id="file"
+          class="form-control"
+          require
+          placeholder="Add Banner"
+          
+      
+        />
+
+    
+        
+
+        <div class="form-footer">
+          <button type="submit" class="btn btn-primary">Add</button>
+         
+         
+        </div>
+        <!-- End .form-footer -->
+      </form>
+							</div><!-- End .card-body -->
+						</div><!-- End .card -->
+					</div><!-- End .col-lg-9 -->
+
+					
+				</div><!-- End .row -->
+			</div><!-- End .container -->
+
+			<div class="mb-5"></div><!-- margin -->
+		</main><!-- End .main -->

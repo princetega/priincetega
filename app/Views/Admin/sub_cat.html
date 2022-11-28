@@ -1,0 +1,182 @@
+<main class="main" ng-controller="homeController">
+			<nav aria-label="breadcrumb" class="breadcrumb-nav">
+				<div class="container">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
+						<li class="breadcrumb-item active" aria-current="page">Add Sub Category</li>
+					</ol>
+				</div><!-- End .container -->
+			</nav>
+
+			<div class="container">
+				<div class="row">
+					<?php require_once '../app/views/inc/aside1.php';?>
+					<div class="col-lg-9 order-lg-last dashboard-content">
+					
+
+						<h3>Add Sub Category</h3>
+
+						
+						<div class="card" ng-show="add">
+							<div class="card-header">
+								Sub Category
+								<a href="" ng-click="viewed()" class="card-edit">View All</a>
+							</div><!-- End .card-header -->
+
+							<div class="card-body"  ng-init="fetch_all_category()" >
+							 <form ng-submit="add_subcategory()" id="add_subcategory"  method="POST" action=""> 
+               <select name="parent_id" class="form-control">
+                <option selected="" value="">Categories</option>
+                 <option ng-repeat="category in categories" value="{{category.id}}">
+                   {{ category.title }}
+                 </option>
+               </select>
+       <input
+          type="text"
+          name="title"
+          id="title"
+          class="form-control"
+          require
+          placeholder="Title"
+          
+      
+        />
+      
+           <input
+          type="file"
+          name="file"
+          id="file"
+          class="form-control"
+          require
+         
+          
+      
+        />
+
+
+        <div class="form-footer">
+          <button type="submit" class="btn btn-primary">Add</button>
+         
+        </div>
+        <!-- End .form-footer -->
+      </form>
+							</div><!-- End .card-body -->
+						</div><!-- End .card -->
+        	<div class="card"  ng-show="view">
+							<div class="card-header">
+							 Sub Category
+								<a href="" ng-click="added()" class="card-edit">Add Sub Category</a>
+							</div><!-- End .card-header -->
+
+							<div class="card-body">
+								<div class="table-responsive">
+		<table class="table table-striped table-bordered" ng-init="fetch_all_sub_category()">
+			<thead>
+			<tr>
+				<th>Title</th>
+				<th>Image</th>
+				<th>Edit</th>
+				<th>Delete</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+			<tr dir-paginate="subcategory in subcategories | itemsPerPage:10">
+					
+            	<td>{{subcategory.title }}</td>
+            	<td><img style="width: 100px!important; height: 100px!important;" src="assets/images/uploads/category/{{ subcategory.image }}">
+            		</td>
+            	
+             
+             
+                <td><button class="cbtn"   data-cids1="{{subcategory.sub_id}}"  data-cids2="{{subcategory.parent_id}}"  data-cids3="{{subcategory.title}}"  title="Like" ><span class ='badge badge-primary badge-pill '>Edit Category</span></button></td> 
+                 <td><button class="dbtn"  ng-click="deletesubCategory()"  data-dids="{{subcategory.sub_id}}" ><span class ='badge badge-danger badge-pill '>Delete Category</span></button></td> 
+            
+               
+               
+				
+			</tr>
+			
+			
+		</tbody>
+		</table>
+		<div align="center">
+		<dir-pagination-controls  direction-links="true" boundary-links="true"></dir-pagination-controls>
+	</div>
+	</div>
+
+		
+	
+							</div><!-- End .card-body -->
+						</div><!-- End .card -->
+
+					</div><!-- End .col-lg-9 -->
+
+					
+				</div><!-- End .row -->
+			</div><!-- End .container -->
+
+			<div class="mb-5"></div><!-- margin -->
+		</main><!-- End .main -->
+
+		 <div
+      class="modal fade"
+      id="update"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="addCartModal"
+      aria-hidden="true"
+      ng-controller="homeController"
+
+    >
+      <div class="modal-dialog" role="document" >
+        <div class="modal-content">
+          <div class="modal-body text-center"  ng-init="fetch_all_category()">
+          	<h3>Update Sub Category</h3>
+      <form ng-submit="updatesubCategory ()" id="updatesubCategory"  method="POST" action="">  
+      	<div class="report"></div>
+         <select name="parent_id" id="parent_id" class="form-control">
+                <option selected="" value="">Categories</option>
+                 <option ng-repeat="category in categories" value="{{category.id}}">
+                   {{ category.title }}
+                 </option>
+               </select>
+       <input
+          type="text"
+          name="titles"
+          id="titles"
+          class="form-control"
+          require
+          
+          value=""
+          
+      
+        />
+      
+           <input
+          type="file"
+          name="file"
+          id="file"
+          class="form-control"
+          require
+         
+          
+      
+        />
+        <input type="hidden" name="id" id="id" value="">
+
+
+        <div class="form-footer">
+          <button type="submit" class="btn btn-primary">Add</button>
+          <button class="btn-primary btn" data-dismiss="modal">
+                  Continue
+                </button>
+         
+        </div>
+        <!-- End .form-footer -->
+      </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

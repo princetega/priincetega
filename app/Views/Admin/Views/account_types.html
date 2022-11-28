@@ -1,0 +1,354 @@
+<div class="content-wrapper" ng-controller="usersController">
+  <div class="page-header">
+    <h3 class="page-title">
+      <span class="page-title-icon bg-gradient-primary text-white mr-2">
+        <i class="mdi mdi-ticket-account"></i>
+      </span>
+      Account Types
+    </h3>
+    
+  </div>
+  <div class="d-flex justify-content-center align-items-center mb-2">
+    <div class="spinner-border text-info spinner-border-sm" role="status" id="account_loader" style="display: none;">
+      <span class="sr-only">...loading</span>
+    </div>
+  </div>
+  <aside class="d-flex justify-content-end">
+    <p class="result text-center" style="display: none"></p>
+  </aside>
+  <div class="row" ng-init="get_all_account_packages()">
+    <div class="col-sm-12 col-md-6 grid-margin" ng-repeat="package in all_packages">
+      <div class="card">
+
+        <div class="card-body p-3 clearfix">
+
+          <!-- <div class="loader" style="text-align: center">
+            <img src="{{dirlocation}}public/assets/images/spinner.gif" style="width: 30px" />
+          </div> -->
+
+          <div class="card-header ">
+            <article class="d-flex justify-content-between mb-md-2">
+
+              <p ng-switch="package.status" class="display-4 p-0 m-0">
+                <span ng-switch-when="1">
+                  <i class="mdi mdi-check-circle text-success"></i>
+                </span>
+                <span ng-switch-when="0">
+                  <i class="mdi mdi-close-circle text-danger"></i>
+                </span>
+                <span ng-switch-default>
+                </span>
+              </p>
+              <div class=" m-2">
+                <button class="btn btn-sm btn-info mr-3 price_inverse_{{ package.package_id }}"
+                  ng-click="toggle_form( package.package_id )">
+                  <span class="spinner-border text-light spinner-border-sm account_loader_{{ package.package_id }}" role="status" style="display: none;">
+                    <span class="sr-only">...loading</span>
+                  </span>
+                  <i class="mdi mdi-pen-plus icon_{{ package.package_id }}"></i>
+                </button>
+                <!-- </view> -->
+                <!-- modal -->
+                <span ng-switch="package.status" data-toggle="modal" data-target=".disable-package-modal"
+                  ng-click="append_modal_info(package)" class="price_inverse_{{ package.package_id }}">
+                  <span ng-switch-when="1">
+                    <button class="btn btn-sm btn-secondary">
+                      <span class="spinner-border text-light spinner-border-sm account_status_loader_{{ package.package_id }}" role="status" style="display: none;">
+                        <span class="sr-only">...loading</span>
+                      </span>
+                      <i class="mdi mdi-toggle-switch-off icon_status_{{ package.package_id }}"></i>
+                    </button>
+                  </span>
+                  <span ng-switch-when="0">
+                    <span class="spinner-border text-light spinner-border-sm account_status_loader_{{ package.package_id }}" role="status" style="display: none;">
+                      <span class="sr-only">...loading</span>
+                    </span>
+                    <button class="btn btn-sm btn-success">
+                      <i class="mdi mdi-toggle-switch icon_status_{{ package.package_id }}"></i>
+                    </button>
+                  </span>
+                  <span ng-switch-default>
+                    none
+                  </span>
+                </span>
+                <!-- /modal -->
+                <!-- <button class="btn btn-sm btn-gradient-warning" type="button" data-toggle="modal"
+                            data-target=".disable_enable_user">
+                            <i class="mdi mdi-autorenew mr-1"></i> Disable
+                          </button> -->
+
+
+              </div>
+            </article>
+            <!-- <h4 class="card-title text-center text-info">
+              {{ package.title | uppercase}}
+            </h4> -->
+            <article class="card-title text-center price_inverse_{{ package.package_id }}">
+              <span ng-switch="package.package_id">
+                <span ng-switch-when="1">
+                  <h4 class="badge badge-secondary ">
+
+                    {{package.title | uppercase}}
+                  </h4>
+                </span>
+                <span ng-switch-when="2">
+                  <h4 class="badge badge-success">
+                    {{package.title | uppercase}}
+                  </h4>
+                </span>
+                <span ng-switch-when="3">
+                  <h4 class="badge badge-info">
+                    {{package.title | uppercase}}
+                  </h4>
+                </span>
+                <span ng-switch-when="4">
+                  <h4 class="badge badge-primary">
+                    {{package.title | uppercase}}
+                  </h4>
+                </span>
+                <span ng-switch-default>
+                  <p class="badge badge-light">
+                    none
+                  </p>
+                </span>
+              </span>
+            </article>
+            <h5 class="card-title text-center price_inverse_{{ package.package_id }} ">{{ package.value | currency :
+              "NGN "}}</h5>
+            <article class="form-package price_{{ package.package_id }}" style="display:none">
+              <form ng-submit="edit_package(package, $index)" id=" edit_package_{{ package.package_id
+                }}">
+                <div class=" d-flex m-2">
+                  <input type="text" class="form-control" value="{{ package.package_id}}" name="package_id" hidden>
+                 
+                </div>
+                <div class=" d-flex m-2">
+                  <div class="mx-1"> 
+                    <label for="title" class="mb-0"> <small >Package name</small></label>
+                    <input type="text" class="form-control"  value="{{ package.title}}" name="title">
+                  </div>
+
+                  <div class="mx-1">
+
+                    <label for="value" class="mb-0"> <small >Price <sup class="text-danger">(*digits only)</sup></small></label>
+                    <input type="tel" class="form-control" value="{{ package.value }}" name="value" pattern="[0-9]+">
+                  </div>
+
+                </div>
+                <div class=" d-flex m-2">
+                  <div class="mx-1">
+                    <label for="product_count" class="mb-0"> <small >Maximum number of ads <sup class="text-danger">(*digits only)</sup></small></label>
+                    <input type="tel" class="form-control" value="{{ package.product_count}}" name="product_count" pattern="[0-9]+">
+                  </div>
+
+                  <div class="mx-1">
+
+                    <label for="duration_in_days" class="mb-0"> <small >Duration in days <sup class="text-danger">(*digits only)</sup></small></label>
+                    <input type="tel" class="form-control" value="{{ package.duration_in_days }}"
+                      name="duration_in_days" pattern="[0-9]+">
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-sm btn-success mx-3"
+                  ng-click="toggle_form( package.package_id )">
+                  <i class=" mdi mdi-content-save-settings"></i>
+                </button>
+              </form>
+            </article>
+          </div>
+
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" ng-repeat="item in package.package_contents">
+              <span ng-switch="item.status" class="mr-1 p-0 form_inverse_{{ item.content_id }}">
+                <!-- form_inverse_{{ item.content_id }} -->
+                <span ng-switch-when="1">
+                  <i class="mdi mdi-check-circle text-success"></i>
+                </span>
+                <span ng-switch-when="0">
+                  <i class="mdi mdi-close-circle text-danger"></i>
+                </span>
+                <span ng-switch-default>
+                </span>
+              </span>
+              <div class=" form_inverse_{{item.content_id}}">
+                <span class="h5">{{item.content_title}}</span> :
+                <span>{{ item.content_body }}</span>
+              </div>
+              <div class="form_{{ item.content_id }}" style="display: none;">
+                <form ng-submit="edit_package_content(item.content_id, $index)"
+                  id="edit_package_content_{{ item.content_id }}" class="p-0 m-0">
+                  <input type="text" name="server_content_id" value="{{ item.content_id}}" hidden />
+                  <div class="d-flex align-content-center">
+                    <input type="text" class="form-control" name="content_title" value="{{ item.content_title}}" />
+                    <input type="text" class=" flex-grow-1 form-control" name="content_body"
+                      value="{{ item.content_body}}" />
+
+                    <button type="submit" class="btn btn-sm btn-success ml-2" type="button"
+                      ng-click="show_textinput(item.content_id)">
+                      <i class="mdi mdi-content-save-settings"></i>
+                    </button>
+                  </div>
+                </form>
+              </div>
+              <article class="d-flex justify-content-between mt-2">
+                <button class="btn btn-sm btn-info  mr-2 form_inverse_{{item.content_id}}"
+                  ng-click="show_textinput(item.content_id)" type="button">
+                  <span class="spinner-border text-light spinner-border-sm content_loader_{{ item.content_id }}" role="status" style="display: none;">
+                    <span class="sr-only">...loading</span>
+                  </span>
+                  <i class="mdi mdi-pen-plus icon_content_{{ item.content_id }}"></i>
+                </button>
+
+                <div ng-switch="item.status" data-toggle="modal" data-target=".disable-content-modal"
+                  ng-click="append_modal_info(item)" class="form_inverse_{{item.content_id}}">
+
+                  <span ng-switch-when="1">
+                    <button class="btn btn-sm btn-secondary" type="button">
+                      <span class="spinner-border text-light spinner-border-sm content_status_loader_{{ item.content_id }}" role="status" style="display: none;">
+                        <span class="sr-only">...loading</span>
+                      </span>
+                      <i class="mdi mdi-toggle-switch-off icon_content_status_{{ item.content_id }}"></i>
+                    </button>
+                  </span>
+                  <span ng-switch-when="0">
+                    <button class="btn btn-sm btn-success" type="button">
+                      <span class="spinner-border text-light spinner-border-sm content_status_loader_{{ item.content_id }}" role="status" style="display: none;">
+                        <span class="sr-only">...loading</span>
+                      </span>
+                      <i class="mdi mdi-toggle-switch  icon_content_status_{{ item.content_id }}"></i>
+                    </button>
+                  </span>
+                  <span ng-switch-default>
+                    none
+                  </span>
+                </div>
+              </article>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- disable package modal -->
+  <div class="modal fade disable-package-modal" id="exampleModalCenter" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="card">
+
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p class=" text-center display-1 text-warning"><i class="mdi mdi-alert"></i></p>
+            <p class="display-4 text-center">
+              You are about to
+              <span ng-switch="info.status">
+                <span ng-switch-when="1">
+                  <span> hide </span>
+                </span>
+                <span ng-switch-when="0">
+                  <span> show </span>
+                </span>
+                <span ng-switch-default>
+                </span>
+              </span>
+              <span class="text-info">
+                {{ info.title | uppercase}}
+              </span>
+            </p>
+          </div>
+          <div class="modal-footer">
+
+            <!-- call disable_enable() -->
+            <span ng-switch="info.status" class="mr-1">
+              <span ng-switch-when="1">
+                <button ng-click="toggle_package_status(0,info)" class="btn btn-secondary btn-sm" data-dismiss="modal">
+                  Hide
+                </button>
+              </span>
+              <span ng-switch-when="0">
+                <button ng-click="toggle_package_status(1,info)" class="btn btn-success btn-sm" data-dismiss="modal">
+                  Show
+                </button>
+              </span>
+              <span ng-switch-default>
+                none
+              </span>
+            </span>
+
+            <button type="button" class="btn btn-light btn-sm " data-dismiss="modal"><i class="mdi mdi-cancel"></i>
+              Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end disable package modal -->
+
+  <!-- disable content  modal -->
+  <div class="modal fade disable-content-modal" id="exampleModalCenter" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="card">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p class=" text-center display-1 text-warning"><i class="mdi mdi-alert"></i></p>
+            <p class="display-4 text-center">
+              You are about to
+              <span ng-switch="info.status">
+                <span ng-switch-when="1">
+                  <span> hide </span>
+                </span>
+                <span ng-switch-when="0">
+                  <span> show </span>
+                </span>
+                <span ng-switch-default>
+                </span>
+              </span>
+              <span class="text-info">
+                {{ info.content_title | uppercase}}
+              </span>
+            </p>
+          </div>
+          <div class="modal-footer">
+
+            <!-- call disable_enable() -->
+            <span ng-switch="info.status" class="mr-1">
+              <span ng-switch-when="1">
+                <button ng-click="toggle_package_content_status(0,info)" class="btn btn-secondary btn-sm"
+                  data-dismiss="modal">
+                  Hide
+                </button>
+              </span>
+              <span ng-switch-when="0">
+                <button ng-click="toggle_package_content_status(1,info)" class="btn btn-success btn-sm"
+                  data-dismiss="modal">
+                  Show
+                </button>
+              </span>
+              <span ng-switch-default>
+                none
+              </span>
+            </span>
+
+            <button type="button" class="btn btn-light btn-sm " data-dismiss="modal">
+              <i class="mdi mdi-cancel"></i>
+              Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end disable content modal -->
+
+</div>
+
+</article>

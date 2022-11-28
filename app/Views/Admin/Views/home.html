@@ -1,0 +1,267 @@
+<div class="content-wrapper" >
+
+  <div class="page-header">
+    <h3 class="page-title">
+      <span class="page-title-icon bg-gradient-primary text-white mr-2">
+        <i class="mdi mdi-home"></i>
+      </span> Dashboard
+    </h3>
+
+
+    <p class="alert alert-info" style="display: none;"></p>
+
+  </div>
+
+  <div class="d-flex justify-content-center align-items-center mb-2">
+    <div class="spinner-border text-info spinner-border-sm" role="status" id="home_loader" style="display: none;">
+      <span class="sr-only">...loading</span>
+    </div>
+  </div>
+
+  <div class="row" ng-init="home_stats()">
+    <div class="col-md-4 stretch-card grid-margin" ng-repeat="ads in statistics.ads ">
+      <div class="card bg-gradient-danger card-img-holder text-white">
+        <div class="card-body">
+          <img src="{{dirlocation}}/public/admin-assets/images/dashboard/circle.png" class="card-img-absolute"
+            alt="circle-image" />
+          <h4 class="font-weight-normal mb-3">Total Ads <i class="mdi mdi-presentation-play mdi-24px float-right"></i>
+          </h4>
+          <h2 class="mb-5">{{ ads.total_ads }}</h2>
+          <h6 class="card-text">Placed by : <strong>{{ ads.total_sellers_with_ads }}</strong> sellers </h6>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 stretch-card grid-margin">
+      <div class="card bg-gradient-info card-img-holder text-white">
+        <div class="card-body">
+          <img src="{{dirlocation}}/public/admin-assets/images/dashboard/circle.png" class="card-img-absolute"
+            alt="circle-image" />
+          <h4 class="font-weight-normal mb-5">Packages with number of users <i
+              class="mdi mdi-account-multiple-outline  mdi-24px float-right"></i>
+          </h4>
+          <div class="d-flex justify-content-between align-content-end"
+            ng-repeat="package_seller in statistics.packages_and_sellers">
+
+            <h6 ng-if="package_seller.title != null ">{{ package_seller.title }}</h6>
+
+            <h4 ng-if="package_seller.title != null ">{{ package_seller.number_of_sellers }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 stretch-card grid-margin" ng-repeat="item in statistics.transactions">
+      <div class="card bg-gradient-success card-img-holder text-white">
+        <div class="card-body">
+          <img src="{{dirlocation}}/public/admin-assets/images/dashboard/circle.png" class="card-img-absolute"
+            alt="circle-image" />
+          <h5 class="font-weight-normal">Total Transactions<i class="mdi mdi-cash-multiple mdi-24px float-right"></i>
+          </h5>
+          <h3 class="mb-0"> {{ item.total_amount | currency :'NGN '}}</h3>
+          <small class="card-text">Total number of transactions : {{ item.total_records }}</small>
+
+          <br>
+
+          <div ng-repeat="success in statistics.success_transactions" class="mt-4">
+            <h4 class="font-weight-normal"> Success Transactions
+            </h4>
+            <h5 class="mb-0"> {{ success.total_success_amount | currency :'NGN '}}</h5>
+            <small class="card-text">Total number of successful transactions : {{ success.total_success_records
+              }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- abuse -->
+  <div class="row" ng-init="fetch_all_abuse_reports()">
+    <div class="col-10 grid-margin">
+      
+      <div class="card">
+        
+        <div class="card-body">
+          <h4 class="card-title">All Complaints</h4>
+
+
+          <div class="d-flex justify-content-center align-items-center mb-2">
+            <div class="spinner-border text-info spinner-border-sm" role="status" id="abuse_loader"
+              style="display: none;">
+              <span class="sr-only">...loading</span>
+            </div>
+          </div>
+
+          <aside class="d-flex justify-content-end">
+            <p class="result text-center" style="display:none;"></p>
+          </aside>
+          
+          
+          <div class="search-field d-none d-md-block my-3">
+            <form class="d-flex align-items-center h-100" action="#">
+              <div class="input-group">
+                <div class="input-group-prepend bg-transparent">
+                  <i class="input-group-text border-0 mdi mdi-file-find"></i>
+                </div>
+                <input type="text" class="form-control bg-transparent border-0" placeholder="search complaints " ng-model="abuseSearch">
+              </div>
+            </form>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Image</th>
+                  <th>
+                    Ads Name <br>
+                    <small>status</small>
+                    
+                  </th>
+                  <th>
+                    Seller
+                  </th>
+                  <th> Complaints</th>
+                  <th>Control</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr dir-paginate="abuse in all_abuse | filter:abuseSearch | itemsPerPage: pageSize" current-page="currentPage" ng-cloak>
+                  <td>{{($index +1) + (currentPage-1) * pageSize}}</td>
+
+                  <td>
+                    <img ng-init=" img = abuse.product_image.split(',')"
+                      src="{{dirlocation}}/public/assets/images/uploads/products/{{img[0]}}" class="mr-2" />
+                    </span>
+                  </td>
+                  <td>
+                    {{ abuse.product_name }}
+                    <span ng-switch="abuse.product_status">
+                      <span ng-switch-when="1">
+                        <i class="mdi mdi-check-circle text-success"></i>
+                      </span>
+                      <span ng-switch-when="0">
+                        <i class="mdi mdi-close-circle text-danger"></i>
+                      </span>
+                      <span ng-switch-default>
+                        none
+                      </span>
+                    </span>
+                  </td>
+                  <td>
+                    {{ abuse.seller_name }}
+                  </td>
+                  <td class="text-center">
+                    <span class="p-1 text-center text-white bg-danger rounded">
+                      {{ abuse.report_counts }}
+                    </span>
+                  </td>
+                  <td>
+                    <button href="#" class="btn btn-info btn-sm"
+                      ng-click="localStorage_save('abuseInfo',abuse,'complaints')" ng-controller="usersController">
+                      <i class=" mdi mdi-eye-check mr-1"></i> View
+                    </button>
+                    <span  ng-switch="abuse.product_status" data-toggle="modal"
+                      data-target=".disable-listing-modal" ng-click="append_modal_info(abuse)" class="mr-1">
+                      <span ng-switch-when="1">
+                      <button class="btn btn-secondary btn-sm">
+                        <span class="spinner-border text-light spinner-border-sm loader_abuse_{{ abuse.product_id }}" role="status"
+                          style="display: none;">
+                          <span class="sr-only">...loading</span>
+                        </span>
+                        <i class="mdi mdi-toggle-switch-off mr-1 icon_abuse_{{ abuse.product_id }}"></i> Hide
+                      </button>
+                      </span>
+                      <span ng-switch-when="0">
+                        <button class="btn btn-success btn-sm">
+                          <span class="spinner-border text-light spinner-border-sm loader_abuse_{{ abuse.product_id }}" role="status"
+                            style="display: none;">
+                            <span class="sr-only">...loading</span>
+                          </span>
+                          <i class="mdi mdi-toggle-switch mr-1 icon_abuse_{{ abuse.product_id }}"></i>Show
+                        </button>
+                        </span>
+                    </span>
+                  </td>
+                  
+                </tr>
+
+              </tbody>
+              <!-- disable listing modal -->
+              <div class="modal fade disable-listing-modal" id="exampleModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="card">
+
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p class=" text-center display-1 text-warning"><i class="mdi mdi-alert"></i></p>
+                        <p class="display-4 text-center">
+                          You are about to 
+
+                          <span ng-switch="info.product_status">
+                            <span ng-switch-when="1">
+                              <span> hide </span>
+                            </span>
+                            <span ng-switch-when="0">
+                              <span> show </span>
+                            </span>
+                            <span ng-switch-default>
+                            </span>
+                          </span>
+
+                          <span class="text-info">
+                            {{ info.product_name | uppercase}}
+                          </span>
+                        </p>
+                      </div>
+                      <div class="modal-footer">
+
+
+                        <span ng-switch="info.product_status" class="mr-1">
+                          <span ng-switch-when="1">
+                            <button ng-click="disable_abuse_listing(0,info, $index)" class="btn btn-secondary btn-sm"
+                              data-dismiss="modal">
+                              Hide
+                            </button>
+                          </span>
+                          <span ng-switch-when="0">
+                            <button ng-click="disable_abuse_listing(1,info, $index)" class="btn btn-success btn-sm"
+                              data-dismiss="modal">
+                              Show
+                            </button>
+                          </span>
+                          <span ng-switch-default>
+                            none
+                          </span>
+                        </span>
+                        <!-- call disable_enable() -->
+                        <button type="button" class="btn btn-light btn-sm " data-dismiss="modal"><i
+                            class="mdi mdi-cancel mr-1"></i>Cancel</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end disable listing modal -->
+            </table>
+            <dir-pagination-controls boundary-links="true" template-url="" style="float: right">
+            </dir-pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- end abuse -->
+
+
+
+
+
+<!-- content-wrapper ends -->
+<!-- partial:partials/_footer.html -->
